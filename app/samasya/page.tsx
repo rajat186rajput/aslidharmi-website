@@ -61,7 +61,7 @@ function ProblemCard({ problem }: { problem: typeof PROBLEMS[0] }) {
           {expanded ? "Kam Padho ↑" : "Poora Padho ↓"}
         </button>
         <a
-          href="https://forms.gle/aslidharmi-samasya"
+          href="https://docs.google.com/forms/d/e/1FAIpQLSd3zMprVIcOyF0njYE8c0lQWJrRQih6SvnUnF4Wlruxb4-rLw/viewform"
           target="_blank"
           rel="noopener noreferrer"
           className="px-5 py-2.5 bg-ochre text-cream font-sans text-xs uppercase tracking-widest hover:bg-cream hover:text-charcoal transition-colors duration-300 rounded-sm"
@@ -173,7 +173,7 @@ export default function SamasyaPage() {
               Batao. Main genuinely parhta hun. Aur agar kuch kar sakta hun — karunga.
             </p>
             <a
-              href="https://forms.gle/aslidharmi-nayi-samasya"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSd3zMprVIcOyF0njYE8c0lQWJrRQih6SvnUnF4Wlruxb4-rLw/viewform"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-10 py-5 bg-ochre text-cream font-sans font-medium text-xs tracking-widest uppercase hover:bg-cream hover:text-charcoal transition-colors duration-300 rounded-sm"

@@ -203,7 +203,7 @@ export default function JoinPage() {
           <RevealBlock delay={0.1}>
             <div className="w-full overflow-hidden border border-charcoal/10">
               <iframe
-                src="https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?embedded=true"
+                src="https://docs.google.com/forms/d/e/1FAIpQLSd3zMprVIcOyF0njYE8c0lQWJrRQih6SvnUnF4Wlruxb4-rLw/viewform?embedded=true"
                 width="100%"
                 height="900"
                 frameBorder="0"
