@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Hind } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/i18n";
+import { AnimatedNavFramer } from "@/components/ui/navigation-menu";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -40,7 +41,10 @@ export default function RootLayout({
       className={`${playfair.variable} ${hind.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-cream text-charcoal">
-        <LanguageProvider>{children}</LanguageProvider>
+        <LanguageProvider>
+          <AnimatedNavFramer />
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );

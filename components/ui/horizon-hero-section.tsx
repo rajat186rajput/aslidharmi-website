@@ -9,7 +9,6 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import Link from 'next/link';
 import { useLang, t, tx } from '@/lib/i18n';
-import { LangSelector } from '@/components/LangSelector';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -276,23 +275,7 @@ export const Component = () => {
       {/* Three.js canvas */}
       <canvas ref={canvasRef} style={{ position: 'fixed', top: 0, left: 0, zIndex: 0, width: '100%', height: '100%', opacity: canvasVisible ? 1 : 0, transition: 'opacity 0.4s ease', pointerEvents: 'none' }} />
 
-      {/* Nav */}
-      <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, padding: '16px 64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(245,240,232,0.08)', opacity: canvasVisible ? 1 : 0, pointerEvents: canvasVisible ? 'auto' : 'none', transition: 'opacity 0.3s ease' }}>
-        <Link href="/" style={{ fontFamily: 'var(--font-playfair)', fontSize: '18px', fontWeight: 600, color: '#F5F0E8', textDecoration: 'none', letterSpacing: '-0.02em' }}>
-          {tx(t.nav.brand, lang)}
-        </Link>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
-          <Link href="/about" style={{ fontFamily: 'var(--font-hind)', fontSize: '13px', color: 'rgba(245,240,232,0.55)', textDecoration: 'none' }}>{tx(t.nav.about, lang)}</Link>
-          <Link href="/philosophy" style={{ fontFamily: 'var(--font-hind)', fontSize: '13px', color: 'rgba(245,240,232,0.55)', textDecoration: 'none' }}>{tx(t.nav.philosophy, lang)}</Link>
-          <Link href="/kaam" style={{ fontFamily: 'var(--font-hind)', fontSize: '13px', color: 'rgba(245,240,232,0.55)', textDecoration: 'none' }}>{tx(t.nav.kaam, lang)}</Link>
-          <Link href="/content" style={{ fontFamily: 'var(--font-hind)', fontSize: '13px', color: 'rgba(245,240,232,0.55)', textDecoration: 'none' }}>{tx(t.nav.content, lang)}</Link>
-          <Link href="/paisa" style={{ fontFamily: 'var(--font-hind)', fontSize: '13px', color: 'rgba(245,240,232,0.55)', textDecoration: 'none' }}>{tx(t.nav.paisa, lang)}</Link>
-          <LangSelector dark />
-          <Link href="/join" style={{ padding: '8px 20px', background: '#C8832A', color: '#F5F0E8', fontFamily: 'var(--font-hind)', fontSize: '13px', fontWeight: 500, textDecoration: 'none', borderRadius: '2px' }}>
-            {tx(t.nav.join, lang)}
-          </Link>
-        </div>
-      </nav>
+      {/* Nav handled globally by AnimatedNavFramer (components/ui/navigation-menu.tsx) — consistent across all pages */}
 
       {/* Hero content */}
       <div style={{ position: 'relative', zIndex: 10, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '0 24px' }}>

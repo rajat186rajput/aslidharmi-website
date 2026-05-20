@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useLang, tx, type Lang } from "@/lib/i18n";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -23,13 +24,50 @@ interface DashboardData {
   }>;
 }
 
-const SUB_SYSTEM_LABELS: Record<string, string> = {
-  content_creation: "Content Banane Mein",
-  women_empowerment: "Mahila Sashaktikaran Mein",
-  self_sustainable: "Self-Sustainable Projects Mein",
-  sangha: "Sangha App Mein",
-  movement_wide: "Movement Admin Mein",
+type Tri = { en: string; hinglish: string; hi: string };
+
+const SUB_SYSTEM_LABELS: Record<string, Tri> = {
+  content_creation: { en: "Content Creation", hinglish: "Content Banane Mein", hi: "कंटेंट बनाने में" },
+  women_empowerment: { en: "Women Empowerment", hinglish: "Mahila Sashaktikaran Mein", hi: "महिला सशक्तिकरण में" },
+  self_sustainable: { en: "Self-Sustainable Projects", hinglish: "Self-Sustainable Projects Mein", hi: "आत्मनिर्भर प्रोजेक्ट में" },
+  sangha: { en: "Sangha App", hinglish: "Sangha App Mein", hi: "संघ ऐप में" },
+  movement_wide: { en: "Movement Admin", hinglish: "Movement Admin Mein", hi: "मूवमेंट एडमिन में" },
 };
+
+const C = {
+  eyebrow: { en: "Transparency", hinglish: "Transparency", hi: "पारदर्शिता" },
+  h1a: { en: "Where the Money", hinglish: "Paisa Kahan", hi: "पैसा कहाँ" },
+  h1em: { en: "Goes", hinglish: "Ja Raha Hai", hi: "जा रहा है" },
+  intro: {
+    en: "Every rupee is public. Nothing hidden. Every donation that comes in — each rupee of it shows up here.",
+    hinglish: "Har rupaya public hai. Kuch bhi chhupaana nahi. Jo bhi donation aata hai — uska ek-ek rupaya yahan dikhta hai.",
+    hi: "हर रुपया सार्वजनिक है। कुछ भी छुपाना नहीं। जो भी दान आता है — उसका एक-एक रुपया यहाँ दिखता है।",
+  },
+  accountSoFar: { en: "The Account So Far", hinglish: "Abhi Tak Ka Hisaab", hi: "अब तक का हिसाब" },
+  statCash: { en: "Total Donations (Cash)", hinglish: "Total Donations (Cash)", hi: "कुल दान (नकद)" },
+  statInkind: { en: "Total Donations (In-Kind)", hinglish: "Total Donations (In-Kind)", hi: "कुल दान (वस्तु रूप)" },
+  statSpent: { en: "Total Spent", hinglish: "Total Spent", hi: "कुल खर्च" },
+  statUnused: { en: "Unutilized", hinglish: "Bacha Hua (Unutilized)", hi: "बचा हुआ" },
+  ofTotal: { en: "of total received", hinglish: "of total received", hi: "कुल प्राप्त का" },
+  whereWent: { en: "Where the Money Went", hinglish: "Kahan Gaya Paisa", hi: "पैसा कहाँ गया" },
+  recent: { en: "Recent Transactions", hinglish: "Pichhle Transactions", hi: "पिछले लेन-देन" },
+  emptyA: { en: "No transactions yet.", hinglish: "Abhi tak koi transaction nahi hua hai.", hi: "अभी तक कोई लेन-देन नहीं हुआ है।" },
+  emptyB: { en: "The movement is still in its early phase.", hinglish: "Movement abhi shuruwati phase mein hai.", hi: "मूवमेंट अभी शुरुआती दौर में है।" },
+  noteA: {
+    en: "These numbers are updated manually whenever a transaction happens. Last updated: ",
+    hinglish: "Yeh numbers manually update hote hain jab bhi koi transaction hota hai. Last updated: ",
+    hi: "ये संख्याएँ हर लेन-देन पर मैन्युअल रूप से अपडेट होती हैं। आख़िरी अपडेट: ",
+  },
+  noteB: { en: "Any questions: ", hinglish: "Koi sawaal ho toh: ", hi: "कोई सवाल हो तो: " },
+  principleLabel: { en: "Principle", hinglish: "Principle", hi: "सिद्धांत" },
+  principle: {
+    en: "“Anti-power-concentration. Money shouldn't pile up in one place. So every rupee is public — accounting is the movement's duty, not an option.”",
+    hinglish: "“Anti-power-concentration. Paisa ek jagah nahi rukna chahiye. Isliye har rupaya public hai — hisaab dena movement ka farz hai, option nahi.”",
+    hi: "“शक्ति-केंद्रीकरण के ख़िलाफ़। पैसा एक जगह नहीं रुकना चाहिए। इसलिए हर रुपया सार्वजनिक है — हिसाब देना मूवमेंट का फ़र्ज़ है, विकल्प नहीं।”",
+  },
+  footHome: { en: "Home", hinglish: "Home", hi: "होम" },
+  footJoin: { en: "Join", hinglish: "Shaamil Ho", hi: "जुड़ें" },
+} as const;
 
 function StatCard({ label, value, sub }: { label: string; value: number; sub?: string }) {
   return (
@@ -50,6 +88,7 @@ function StatCard({ label, value, sub }: { label: string; value: number; sub?: s
 }
 
 export default function PaisaPage() {
+  const { lang } = useLang();
   const [data, setData] = useState<DashboardData | null>(null);
 
   useEffect(() => {
@@ -57,7 +96,6 @@ export default function PaisaPage() {
       .then(r => r.json())
       .then(setData)
       .catch(() => {
-        // Fallback to static dashboard.json
         fetch("/dashboard.json")
           .then(r => r.json())
           .then(setData)
@@ -65,7 +103,6 @@ export default function PaisaPage() {
       });
   }, []);
 
-  // Placeholder data while loading or if no data
   const d: DashboardData = data ?? {
     total_donations_cash: 0,
     total_donations_inkind: 0,
@@ -78,6 +115,9 @@ export default function PaisaPage() {
 
   const totalIn = d.total_donations_cash + d.total_donations_inkind;
   const maxSubSystem = Math.max(...Object.values(d.by_sub_system), 1);
+  const subLabel = (key: string): string =>
+    tx(SUB_SYSTEM_LABELS[key] ?? { en: key, hinglish: key, hi: key }, lang);
+  const localeForLang = (l: Lang) => (l === "hi" ? "hi-IN" : "en-IN");
 
   return (
     <main className="bg-charcoal text-cream min-h-screen">
@@ -94,14 +134,13 @@ export default function PaisaPage() {
           transition={{ duration: 0.9, ease: EASE }}
           className="max-w-4xl relative"
         >
-          <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/60 mb-6">Transparency</p>
+          <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/60 mb-6">{tx(C.eyebrow, lang)}</p>
           <h1 className="font-heading text-5xl md:text-7xl text-cream font-semibold leading-[0.92] mb-6">
-            Paisa Kahan<br />
-            <em className="text-ochre">Ja Raha Hai</em>
+            {tx(C.h1a, lang)}<br />
+            <em className="text-ochre">{tx(C.h1em, lang)}</em>
           </h1>
           <p className="font-sans text-xl text-cream/50 max-w-xl leading-relaxed">
-            Har rupaya public hai. Kuch bhi chhupaana nahi.
-            Jo bhi donation aata hai — uska ek-ek rupaya yahan dikhta hai.
+            {tx(C.intro, lang)}
           </p>
         </motion.div>
       </section>
@@ -109,12 +148,12 @@ export default function PaisaPage() {
       {/* ── STAT CARDS ── */}
       <section className="px-6 md:px-16 pb-16">
         <div className="max-w-5xl mx-auto">
-          <p className="font-sans text-xs uppercase tracking-[0.25em] text-cream/30 mb-8">Abhi Tak Ka Hisaab</p>
+          <p className="font-sans text-xs uppercase tracking-[0.25em] text-cream/30 mb-8">{tx(C.accountSoFar, lang)}</p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-            <StatCard label="Total Donations (Cash)" value={d.total_donations_cash} />
-            <StatCard label="Total Donations (In-Kind)" value={d.total_donations_inkind} />
-            <StatCard label="Total Spent" value={d.total_expenses} />
-            <StatCard label="Bacha Hua (Unutilized)" value={d.unutilized_balance} sub={`${totalIn > 0 ? Math.round((d.unutilized_balance / totalIn) * 100) : 0}% of total received`} />
+            <StatCard label={tx(C.statCash, lang)} value={d.total_donations_cash} />
+            <StatCard label={tx(C.statInkind, lang)} value={d.total_donations_inkind} />
+            <StatCard label={tx(C.statSpent, lang)} value={d.total_expenses} />
+            <StatCard label={tx(C.statUnused, lang)} value={d.unutilized_balance} sub={`${totalIn > 0 ? Math.round((d.unutilized_balance / totalIn) * 100) : 0}% ${tx(C.ofTotal, lang)}`} />
           </div>
         </div>
       </section>
@@ -123,7 +162,7 @@ export default function PaisaPage() {
       {Object.keys(d.by_sub_system).length > 0 && (
         <section className="px-6 md:px-16 py-16 border-t border-cream/8">
           <div className="max-w-3xl mx-auto">
-            <p className="font-sans text-xs uppercase tracking-[0.25em] text-cream/30 mb-8">Kahan Gaya Paisa</p>
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-cream/30 mb-8">{tx(C.whereWent, lang)}</p>
             <div className="space-y-5">
               {Object.entries(d.by_sub_system).map(([key, val], i) => (
                 <motion.div
@@ -134,7 +173,7 @@ export default function PaisaPage() {
                   viewport={{ once: true }}
                 >
                   <div className="flex justify-between items-center mb-2">
-                    <p className="font-sans text-sm text-cream/60">{SUB_SYSTEM_LABELS[key] ?? key}</p>
+                    <p className="font-sans text-sm text-cream/60">{subLabel(key)}</p>
                     <p className="font-sans text-sm text-cream/40">₹{val.toLocaleString("en-IN")}</p>
                   </div>
                   <div className="h-px bg-cream/8 relative">
@@ -157,17 +196,17 @@ export default function PaisaPage() {
       {/* ── RECENT TRANSACTIONS ── */}
       <section className="px-6 md:px-16 py-16 border-t border-cream/8">
         <div className="max-w-5xl mx-auto">
-          <p className="font-sans text-xs uppercase tracking-[0.25em] text-cream/30 mb-8">Pichhle Transactions</p>
+          <p className="font-sans text-xs uppercase tracking-[0.25em] text-cream/30 mb-8">{tx(C.recent, lang)}</p>
           {d.recent_transactions.length === 0 ? (
             <div className="py-16 text-center">
               <p className="font-sans text-cream/30 text-sm">
-                Abhi tak koi transaction nahi hua hai.<br />
-                Movement abhi shuruwati phase mein hai.
+                {tx(C.emptyA, lang)}<br />
+                {tx(C.emptyB, lang)}
               </p>
             </div>
           ) : (
             <div className="divide-y divide-cream/8">
-              {d.recent_transactions.slice(0, 5).map((tx, i) => (
+              {d.recent_transactions.slice(0, 5).map((txn, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0 }}
@@ -176,11 +215,11 @@ export default function PaisaPage() {
                   viewport={{ once: true }}
                   className="py-4 grid grid-cols-2 md:grid-cols-5 gap-4"
                 >
-                  <p className="font-sans text-xs text-cream/40">{tx.date}</p>
-                  <p className="font-sans text-xs text-cream/60">{tx.type}</p>
-                  <p className="font-sans text-sm text-cream font-medium">₹{tx.amount.toLocaleString("en-IN")}</p>
-                  <p className="font-sans text-xs text-ochre/70">{SUB_SYSTEM_LABELS[tx.sub_system] ?? tx.sub_system}</p>
-                  <p className="font-sans text-xs text-cream/40 md:col-span-1">{tx.description}</p>
+                  <p className="font-sans text-xs text-cream/40">{txn.date}</p>
+                  <p className="font-sans text-xs text-cream/60">{txn.type}</p>
+                  <p className="font-sans text-sm text-cream font-medium">₹{txn.amount.toLocaleString("en-IN")}</p>
+                  <p className="font-sans text-xs text-ochre/70">{subLabel(txn.sub_system)}</p>
+                  <p className="font-sans text-xs text-cream/40 md:col-span-1">{txn.description}</p>
                 </motion.div>
               ))}
             </div>
@@ -192,13 +231,12 @@ export default function PaisaPage() {
       <section className="px-6 md:px-16 py-12 border-t border-cream/8">
         <div className="max-w-3xl mx-auto">
           <p className="font-sans text-xs text-cream/30 leading-relaxed">
-            Yeh numbers manually update hote hain jab bhi koi transaction hota hai.
-            Last updated:{" "}
+            {tx(C.noteA, lang)}
             {d.generated_at
-              ? new Date(d.generated_at).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
+              ? new Date(d.generated_at).toLocaleDateString(localeForLang(lang), { day: "numeric", month: "long", year: "numeric" })
               : "—"}
             <br />
-            Koi sawaal ho toh:{" "}
+            {tx(C.noteB, lang)}
             <a href="mailto:aslidharmi@gmail.com" className="text-ochre/60 hover:text-ochre transition-colors">
               aslidharmi@gmail.com
             </a>
@@ -210,12 +248,10 @@ export default function PaisaPage() {
       <section className="px-6 md:px-16 pb-20">
         <div className="max-w-3xl mx-auto">
           <div className="p-8 border border-ochre/20">
-            <p className="font-sans text-xs uppercase tracking-wider text-ochre/60 mb-3">Principle</p>
-            <p className="font-sans text-base text-cream/50 leading-relaxed italic">
-              &ldquo;Anti-power-concentration. Paisa ek jagah nahi rukna chahiye.
-              Isliye har rupaya public hai — hisaab dena movement ka farz hai, option nahi.&rdquo;
+            <p className="font-sans text-xs uppercase tracking-wider text-ochre/60 mb-3">{tx(C.principleLabel, lang)}</p>
+            <p className="font-sans text-base text-cream/50 leading-relaxed">
+              {tx(C.principle, lang)}
             </p>
-            <p className="font-sans text-xs text-cream/30 mt-3">— Manifesto §1.8</p>
           </div>
         </div>
       </section>
@@ -224,8 +260,8 @@ export default function PaisaPage() {
       <footer className="px-6 md:px-16 py-8 border-t border-cream/8 flex flex-col md:flex-row items-center justify-between gap-4">
         <span className="font-heading text-sm text-cream/30">© 2026 Asli Dharmi</span>
         <div className="flex gap-8 font-sans text-xs uppercase tracking-widest text-cream/30">
-          <Link href="/" className="hover:text-cream/60 transition-colors">Home</Link>
-          <Link href="/join" className="hover:text-cream/60 transition-colors">Shaamil Ho</Link>
+          <Link href="/" className="hover:text-cream/60 transition-colors">{tx(C.footHome, lang)}</Link>
+          <Link href="/join" className="hover:text-cream/60 transition-colors">{tx(C.footJoin, lang)}</Link>
           <a href="mailto:aslidharmi@gmail.com" className="hover:text-cream/60 transition-colors">Contact</a>
         </div>
       </footer>

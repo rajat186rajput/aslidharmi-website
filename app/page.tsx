@@ -7,6 +7,37 @@ import { Component as CosmosHero } from "@/components/ui/horizon-hero-section";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+const SERVICES = [
+  {
+    num: "01",
+    status: "Active",
+    title: "Content Creation",
+    desc: "Philosophy ko reels, essays aur podcast mein — log sawaal puchhna seekhein, sirf entertain na ho.",
+    href: "/kaam#content",
+  },
+  {
+    num: "02",
+    status: "Planning",
+    title: "Women Empowerment",
+    desc: "Gaon ki mahilaon ko skill aur income ka source — daan nahi, dignity. Training se marketplace tak.",
+    href: "/kaam#women",
+  },
+  {
+    num: "03",
+    status: "Build 2027–28",
+    title: "Self-Sustainable Systems",
+    desc: "Hill Homestay aur Panchmukhi Village Hub — wahaan services jahan government aur corporate nahi pahunchte.",
+    href: "/kaam#systems",
+  },
+  {
+    num: "04",
+    status: "MVP 2027",
+    title: "Sangha & Community",
+    desc: "Bujurgon ke liye 1-tap SOS aur hyper-local madad ka network — bina ads, bina algorithm, bina surveillance.",
+    href: "/kaam#sangha",
+  },
+] as const;
+
 export default function HomePage() {
   const { lang } = useLang();
 
@@ -15,7 +46,74 @@ export default function HomePage() {
       {/* Three.js cosmos hero — includes nav, scroll sections, and marquee */}
       <CosmosHero />
 
-      {/* Value Props — appears after cosmos scroll sections */}
+      {/* ── What We Do — Services (services-forward) ── */}
+      <section className="px-6 md:px-16 py-28 bg-cream relative z-10 border-t border-charcoal/10">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: EASE }}
+            viewport={{ once: true }}
+          >
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/70 mb-4">Hum Kya Karte Hain</p>
+            <h2 className="font-heading text-4xl md:text-5xl text-charcoal font-semibold mb-5 leading-tight">
+              Char Kaam, Ek Mission
+            </h2>
+            <p className="font-sans text-base text-charcoal/55 max-w-2xl leading-relaxed mb-16">
+              Asli Dharmi sirf soch nahi — zameen pe kaam hai. Har tool ka ek hi maqsad: insaan ko
+              independent banana, dependent nahi.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {SERVICES.map((s, i) => (
+              <motion.div
+                key={s.num}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: i * 0.08, ease: EASE }}
+                viewport={{ once: true, margin: "-40px" }}
+              >
+                <Link
+                  href={s.href}
+                  className="group flex flex-col h-full p-8 border border-charcoal/10 hover:border-ochre/40 transition-colors duration-300 min-h-[210px]"
+                >
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="font-heading text-3xl text-ochre/20 group-hover:text-ochre/40 font-bold transition-colors">
+                      {s.num}
+                    </span>
+                    <span className="font-sans text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-sm bg-charcoal/5 text-charcoal/45">
+                      {s.status}
+                    </span>
+                  </div>
+                  <h3 className="font-heading text-2xl text-charcoal font-semibold mb-3 leading-snug group-hover:text-ochre transition-colors duration-300">
+                    {s.title}
+                  </h3>
+                  <p className="font-sans text-sm text-charcoal/55 leading-relaxed mb-6 flex-1">{s.desc}</p>
+                  <span className="font-sans text-xs uppercase tracking-wider text-charcoal/40 group-hover:text-ochre transition-colors">
+                    Aur Jaano →
+                  </span>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Secondary — soul/transparency links */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="mt-12 flex flex-wrap gap-x-10 gap-y-3 font-sans text-xs uppercase tracking-wider text-charcoal/40"
+          >
+            <Link href="/philosophy" className="hover:text-ochre transition-colors">Hamaari Soch — 10 Vishwas →</Link>
+            <Link href="/samasya" className="hover:text-ochre transition-colors">Samasya Board →</Link>
+            <Link href="/paisa" className="hover:text-ochre transition-colors">Paisa — Poora Hisaab →</Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Value Props — philosophy / "what happens here" (supporting section) */}
       <section className="px-6 md:px-16 py-32 bg-cream relative z-10">
         <div className="max-w-6xl mx-auto">
           <motion.p
@@ -45,51 +143,6 @@ export default function HomePage() {
                   {tx(v.title, lang)}
                 </h3>
                 <p className="font-sans text-base text-charcoal/55 leading-relaxed">{tx(v.body, lang)}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Movement Preview Grid */}
-      <section className="px-6 md:px-16 pb-20 bg-cream relative z-10">
-        <div className="max-w-6xl mx-auto">
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="font-sans text-xs uppercase tracking-[0.25em] text-charcoal/30 mb-10"
-          >
-            Movement Ke Hisse
-          </motion.p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {[
-              { href: "/kaam", num: "01", title: "4 Tools, 1 Mission", sub: "Content, Women Empowerment, Hill Homestay, Sangha", cta: "Hamare Kaam Dekho", dark: false },
-              { href: "/philosophy", num: "02", title: "10 Buniyadhi Vishwas", sub: "Woh soch jis pe yeh movement khadi hai", cta: "Hamaari Soch Padho", dark: false },
-              { href: "/samasya", num: "03", title: "Samasya Board", sub: "Community problems jo genuinely solve ho sakti hain", cta: "Samasya Board Dekho", dark: false },
-              { href: "/paisa", num: "04", title: "Paisa Kahan Ja Raha Hai", sub: "Har rupaya public — poora hisaab yahan", cta: "Transparency Dekho", dark: false },
-            ].map((card, i) => (
-              <motion.div
-                key={card.href}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: i * 0.08, ease: EASE }}
-                viewport={{ once: true, margin: "-40px" }}
-              >
-                <Link
-                  href={card.href}
-                  className="group flex flex-col justify-between p-8 border border-charcoal/10 hover:border-ochre/40 transition-colors duration-300 min-h-[180px]"
-                >
-                  <div className="flex items-start justify-between gap-4 mb-6">
-                    <span className="font-heading text-3xl text-ochre/15 group-hover:text-ochre/30 transition-colors font-bold">{card.num}</span>
-                    <span className="font-sans text-xs text-charcoal/30 group-hover:text-ochre/60 transition-colors uppercase tracking-wider">→</span>
-                  </div>
-                  <div>
-                    <h3 className="font-heading text-xl text-charcoal font-semibold mb-2 leading-snug group-hover:text-ochre transition-colors duration-300">{card.title}</h3>
-                    <p className="font-sans text-sm text-charcoal/45 leading-relaxed">{card.sub}</p>
-                  </div>
-                </Link>
               </motion.div>
             ))}
           </div>

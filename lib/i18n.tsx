@@ -118,6 +118,11 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     if (saved && ["en", "hi", "hinglish"].includes(saved)) setLangState(saved);
   }, []);
 
+  // Expose active language to CSS (Devanagari needs looser line-height than Latin)
+  useEffect(() => {
+    document.documentElement.setAttribute("data-lang", lang);
+  }, [lang]);
+
   const setLang = (l: Lang) => {
     setLangState(l);
     localStorage.setItem("ad-lang", l);
