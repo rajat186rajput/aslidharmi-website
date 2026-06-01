@@ -336,7 +336,7 @@ export default function ContentPage() {
               </div>
               <div className="flex gap-3 flex-wrap shrink-0">
                 <Link
-                  href="/philosophy"
+                  href="/hamari-soch"
                   className="inline-flex items-center gap-3 px-8 py-4 border border-cream/20 text-cream/60 font-sans font-medium text-xs tracking-widest uppercase hover:border-cream/50 transition-all duration-300 rounded-sm"
                 >
                   {tx(C.readPhilosophy, lang)}
@@ -358,7 +358,7 @@ export default function ContentPage() {
         <span className="font-heading text-sm text-cream/30">© 2026 Asli Dharmi</span>
         <div className="flex gap-8 font-sans text-xs uppercase tracking-widest text-cream/30">
           <Link href="/" className="hover:text-cream/60 transition-colors">{tx(C.footHome, lang)}</Link>
-          <Link href="/about" className="hover:text-cream/60 transition-colors">About</Link>
+          <Link href="/hamari-soch" className="hover:text-cream/60 transition-colors">{tx({ en: "Our Soch", hinglish: "Hamari Soch", hi: "हमारी सोच" }, lang)}</Link>
           <Link href="/join" className="hover:text-cream/60 transition-colors">{tx(C.footJoin, lang)}</Link>
           <a href="https://instagram.com/aslidharmi" target="_blank" rel="noopener noreferrer" className="hover:text-cream/60 transition-colors">Instagram</a>
         </div>

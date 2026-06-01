@@ -172,3 +172,20 @@ html[data-lang="hi"] li,
 html[data-lang="hi"] figcaption {
   line-height: 1.9 !important;
 }
+
+/* ── Site-wide reduced-motion guard ──
+   Honour the user's OS "reduce motion" setting. This neutralises CSS
+   transitions/animations globally; Framer Motion scroll/parallax outputs are
+   additionally collapsed to static via the `useReducedMotion()` hook in pages
+   (parallax `y` transforms resolve to 0). Decorative movement degrades to
+   "content simply appears"; functional layout transitions become near-instant. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

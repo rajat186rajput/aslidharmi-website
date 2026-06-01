@@ -304,8 +304,8 @@ export default function JoinPage() {
         <span className="font-heading text-sm text-cream/30">© 2026 Asli Dharmi</span>
         <div className="flex gap-8 font-sans text-xs uppercase tracking-widest text-cream/30">
           <Link href="/" className="hover:text-cream/60 transition-colors">Home</Link>
-          <Link href="/philosophy" className="hover:text-cream/60 transition-colors">Hamaari Soch</Link>
-          <Link href="/kaam" className="hover:text-cream/60 transition-colors">Hamare Kaam</Link>
+          <Link href="/hamari-soch" className="hover:text-cream/60 transition-colors">Hamari Soch</Link>
+          <Link href="/help-us" className="hover:text-cream/60 transition-colors">Help Us</Link>
           <a href="https://instagram.com/aslidharmi" target="_blank" rel="noopener noreferrer" className="hover:text-cream/60 transition-colors">Instagram</a>
         </div>
       </footer>

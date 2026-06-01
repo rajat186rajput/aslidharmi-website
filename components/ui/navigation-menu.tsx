@@ -9,13 +9,13 @@ import { cn } from "@/lib/utils";
 import { useLang, t, tx } from "@/lib/i18n";
 import { LangSelector } from "@/components/LangSelector";
 
-// Asli Dharmi routes (brand wordmark on the left links to Home)
+// Asli Dharmi routes (brand wordmark on the left links to Home, Join pill on the right).
+// IA restructure 2026-06-01: 4 middle links (was 5). "Reels & Essays"/Content removed from nav.
 const navItems = [
-  { key: "about", href: "/about" },
-  { key: "philosophy", href: "/philosophy" },
-  { key: "kaam", href: "/kaam" },
-  { key: "content", href: "/content" },
-  { key: "paisa", href: "/paisa" },
+  { key: "soch", href: "/hamari-soch" },
+  { key: "products", href: "/products" },
+  { key: "skills", href: "/skills" },
+  { key: "help", href: "/help-us" },
 ] as const;
 
 const EXPAND_SCROLL_THRESHOLD = 80;

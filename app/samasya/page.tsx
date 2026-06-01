@@ -243,7 +243,7 @@ export default function SamasyaPage() {
         <span className="font-heading text-sm text-cream/30">© 2026 Asli Dharmi</span>
         <div className="flex gap-8 font-sans text-xs uppercase tracking-widest text-cream/30">
           <Link href="/" className="hover:text-cream/60 transition-colors">{tx(C.footHome, lang)}</Link>
-          <Link href="/kaam" className="hover:text-cream/60 transition-colors">{tx(C.footKaam, lang)}</Link>
+          <Link href="/hamari-soch#kaam" className="hover:text-cream/60 transition-colors">{tx(C.footKaam, lang)}</Link>
           <Link href="/join" className="hover:text-cream/60 transition-colors">{tx(C.footJoin, lang)}</Link>
         </div>
       </footer>

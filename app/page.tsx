@@ -7,37 +7,6 @@ import { Component as CosmosHero } from "@/components/ui/horizon-hero-section";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const SERVICES = [
-  {
-    num: "01",
-    status: "Active",
-    title: "Content Creation",
-    desc: "Philosophy ko reels, essays aur podcast mein — log sawaal puchhna seekhein, sirf entertain na ho.",
-    href: "/kaam#content",
-  },
-  {
-    num: "02",
-    status: "Planning",
-    title: "Women Empowerment",
-    desc: "Gaon ki mahilaon ko skill aur income ka source — daan nahi, dignity. Training se marketplace tak.",
-    href: "/kaam#women",
-  },
-  {
-    num: "03",
-    status: "Build 2027–28",
-    title: "Self-Sustainable Systems",
-    desc: "Hill Homestay aur Panchmukhi Village Hub — wahaan services jahan government aur corporate nahi pahunchte.",
-    href: "/kaam#systems",
-  },
-  {
-    num: "04",
-    status: "MVP 2027",
-    title: "Sangha & Community",
-    desc: "Bujurgon ke liye 1-tap SOS aur hyper-local madad ka network — bina ads, bina algorithm, bina surveillance.",
-    href: "/kaam#sangha",
-  },
-] as const;
-
 export default function HomePage() {
   const { lang } = useLang();
 
@@ -55,18 +24,17 @@ export default function HomePage() {
             transition={{ duration: 0.7, ease: EASE }}
             viewport={{ once: true }}
           >
-            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/70 mb-4">Hum Kya Karte Hain</p>
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/70 mb-4">{tx(t.home.servicesLabel, lang)}</p>
             <h2 className="font-heading text-4xl md:text-5xl text-charcoal font-semibold mb-5 leading-tight">
-              Char Kaam, Ek Mission
+              {tx(t.home.servicesTitle, lang)}
             </h2>
             <p className="font-sans text-base text-charcoal/55 max-w-2xl leading-relaxed mb-16">
-              Asli Dharmi sirf soch nahi — zameen pe kaam hai. Har tool ka ek hi maqsad: insaan ko
-              independent banana, dependent nahi.
+              {tx(t.home.servicesIntro, lang)}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {SERVICES.map((s, i) => (
+            {t.home.services.map((s, i) => (
               <motion.div
                 key={s.num}
                 initial={{ opacity: 0, y: 30 }}
@@ -83,15 +51,15 @@ export default function HomePage() {
                       {s.num}
                     </span>
                     <span className="font-sans text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-sm bg-charcoal/5 text-charcoal/45">
-                      {s.status}
+                      {tx(s.status, lang)}
                     </span>
                   </div>
                   <h3 className="font-heading text-2xl text-charcoal font-semibold mb-3 leading-snug group-hover:text-ochre transition-colors duration-300">
-                    {s.title}
+                    {tx(s.title, lang)}
                   </h3>
-                  <p className="font-sans text-sm text-charcoal/55 leading-relaxed mb-6 flex-1">{s.desc}</p>
+                  <p className="font-sans text-sm text-charcoal/55 leading-relaxed mb-6 flex-1">{tx(s.desc, lang)}</p>
                   <span className="font-sans text-xs uppercase tracking-wider text-charcoal/40 group-hover:text-ochre transition-colors">
-                    Aur Jaano →
+                    {tx(t.home.learnMore, lang)}
                   </span>
                 </Link>
               </motion.div>
@@ -106,9 +74,9 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="mt-12 flex flex-wrap gap-x-10 gap-y-3 font-sans text-xs uppercase tracking-wider text-charcoal/40"
           >
-            <Link href="/philosophy" className="hover:text-ochre transition-colors">Hamaari Soch — 10 Vishwas →</Link>
-            <Link href="/samasya" className="hover:text-ochre transition-colors">Samasya Board →</Link>
-            <Link href="/paisa" className="hover:text-ochre transition-colors">Paisa — Poora Hisaab →</Link>
+            <Link href="/hamari-soch" className="hover:text-ochre transition-colors">{tx(t.home.link1, lang)}</Link>
+            <Link href="/samasya" className="hover:text-ochre transition-colors">{tx(t.home.link2, lang)}</Link>
+            <Link href="/help-us" className="hover:text-ochre transition-colors">{tx(t.home.link3, lang)}</Link>
           </motion.div>
         </div>
       </section>
@@ -172,7 +140,7 @@ export default function HomePage() {
           <p className="font-sans text-sm text-cream/40 tracking-widest uppercase">{tx(t.quote.attr, lang)}</p>
           <div className="mt-12">
             <Link
-              href="/philosophy"
+              href="/hamari-soch"
               className="inline-flex items-center gap-3 font-sans text-sm text-cream/60 hover:text-ochre transition-colors duration-300 tracking-wide uppercase"
             >
               {tx(t.quote.cta, lang)}
@@ -212,8 +180,8 @@ export default function HomePage() {
         <span className="font-heading text-sm text-charcoal/40">{tx(t.footer.copy, lang)}</span>
         <div className="flex gap-8 font-sans text-xs uppercase tracking-widest text-charcoal/40">
           <a href="https://instagram.com/aslidharmi" target="_blank" rel="noopener noreferrer" className="hover:text-charcoal transition-colors">Instagram</a>
-          <Link href="/philosophy" className="hover:text-charcoal transition-colors">{tx(t.nav.philosophy, lang)}</Link>
-          <a href="mailto:aslidharmi@gmail.com" className="hover:text-charcoal transition-colors">Contact</a>
+          <Link href="/hamari-soch" className="hover:text-charcoal transition-colors">{tx(t.nav.soch, lang)}</Link>
+          <a href="mailto:aslidharmi@gmail.com" className="hover:text-charcoal transition-colors">{tx(t.footer.contact, lang)}</a>
         </div>
       </footer>
     </main>

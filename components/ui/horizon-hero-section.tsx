@@ -299,7 +299,7 @@ export const Component = () => {
           <Link href="/join" style={{ padding: '14px 32px', background: 'rgba(245,240,232,0.1)', color: '#F5F0E8', border: '1px solid rgba(245,240,232,0.2)', fontFamily: 'var(--font-hind)', fontSize: '12px', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', borderRadius: '2px', backdropFilter: 'blur(8px)' }}>
             {tx(t.hero.cta1, lang)} →
           </Link>
-          <Link href="/philosophy" style={{ padding: '14px 32px', background: '#C8832A', color: '#F5F0E8', fontFamily: 'var(--font-hind)', fontSize: '12px', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', borderRadius: '2px' }}>
+          <Link href="/hamari-soch" style={{ padding: '14px 32px', background: '#C8832A', color: '#F5F0E8', fontFamily: 'var(--font-hind)', fontSize: '12px', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', borderRadius: '2px' }}>
             {tx(t.hero.cta2, lang)}
           </Link>
         </div>
