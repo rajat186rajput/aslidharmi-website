@@ -59,6 +59,16 @@ const C = {
     hi: "मार्केटप्लेस बन रहा है। अपनी जानकारी छोड़ दो — जब खुलेगा, सबसे पहले आपको पता चलेगा — ख़रीदार या विक्रेता, दोनों के लिए।",
   },
   formOpen: { en: "Open the form ↗", hinglish: "Form Kholo ↗", hi: "फ़ॉर्म खोलो ↗" },
+  phHeading: {
+    en: "We're opening the waitlist soon",
+    hinglish: "Waitlist jaldi khul raha hai",
+    hi: "वेटलिस्ट जल्द खुल रहा है",
+  },
+  phNote: {
+    en: "The form will appear here when it's ready. Leave us a note at aslidharmi@gmail.com to be notified first.",
+    hinglish: "Form jab ready hoga yahan aayega. Sabse pehle jaanno — aslidharmi@gmail.com pe likho.",
+    hi: "फ़ॉर्म तैयार होने पर यहाँ आएगा। सबसे पहले जानने के लिए — aslidharmi@gmail.com पर लिखो।",
+  },
 
   teaserLabel: { en: "Coming Categories", hinglish: "Aane Wali Categories", hi: "आने वाली श्रेणियाँ" },
   teaserStatus: { en: "Coming Soon", hinglish: "Coming Soon", hi: "जल्द आ रहा है" },
@@ -166,7 +176,14 @@ export default function ProductsPage() {
           </RevealBlock>
         </div>
         {/* TODO: Rajat to supply Google Form URL for Products waitlist (see PRODUCTS_WAITLIST_FORM_URL). */}
-        <FormEmbed src={PRODUCTS_WAITLIST_FORM_URL} title="Products Waitlist" openLabel={tx(C.formOpen, lang)} />
+        {/* Until the real URL is supplied, FormEmbed renders a graceful "coming soon" card (no broken iframe). */}
+        <FormEmbed
+          src={PRODUCTS_WAITLIST_FORM_URL}
+          title="Products Waitlist"
+          openLabel={tx(C.formOpen, lang)}
+          placeholderHeading={tx(C.phHeading, lang)}
+          placeholderNote={tx(C.phNote, lang)}
+        />
       </section>
 
       {/* ── (3) TEASER CATEGORY CARDS ── */}

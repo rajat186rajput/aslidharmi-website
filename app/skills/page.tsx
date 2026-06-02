@@ -48,6 +48,16 @@ const C = {
     hi: "हम पहले बैच अभी बना रहे हैं। अपनी रुचि छोड़ दो — जब प्रशिक्षण आपके पास खुलेगा, हम बात करेंगे।",
   },
   formOpen: { en: "Open the form ↗", hinglish: "Form Kholo ↗", hi: "फ़ॉर्म खोलो ↗" },
+  phHeading: {
+    en: "We're opening enrolment soon",
+    hinglish: "Enrolment jaldi khul raha hai",
+    hi: "नामांकन जल्द खुल रहा है",
+  },
+  phNote: {
+    en: "The form will appear here when it's ready. Write to aslidharmi@gmail.com to tell us what skill you want to learn.",
+    hinglish: "Form jab ready hoga yahan aayega. Hume batao kya seekhna chahte ho — aslidharmi@gmail.com.",
+    hi: "फ़ॉर्म तैयार होने पर यहाँ आएगा। हमें बताओ क्या सीखना चाहते हो — aslidharmi@gmail.com।",
+  },
 
   ctaHeading: { en: "Ready to start?", hinglish: "Shuru Karne Ke Liye Ready?", hi: "शुरू करने के लिए तैयार?" },
   ctaSub: { en: "Skilling is one part of a bigger movement. Join, and walk with us.", hinglish: "Skilling ek bade movement ka hissa hai. Join karo, saath chalo.", hi: "कौशल एक बड़े आंदोलन का हिस्सा है। जुड़ो, साथ चलो।" },
@@ -142,7 +152,14 @@ export default function SkillsPage() {
           </RevealBlock>
         </div>
         {/* TODO: Rajat to supply Google Form URL for Skills enroll/interest (see SKILLS_ENROLL_FORM_URL). */}
-        <FormEmbed src={SKILLS_ENROLL_FORM_URL} title="Skills Enrollment" openLabel={tx(C.formOpen, lang)} />
+        {/* Until the real URL is supplied, FormEmbed renders a graceful "coming soon" card (no broken iframe). */}
+        <FormEmbed
+          src={SKILLS_ENROLL_FORM_URL}
+          title="Skills Enrollment"
+          openLabel={tx(C.formOpen, lang)}
+          placeholderHeading={tx(C.phHeading, lang)}
+          placeholderNote={tx(C.phNote, lang)}
+        />
       </section>
 
       {/* ── (4) CTA ── */}

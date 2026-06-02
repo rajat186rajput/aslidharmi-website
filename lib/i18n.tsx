@@ -155,7 +155,7 @@ export const t = {
     ],
     link1: { en: "Our Philosophy — 10 Beliefs →", hinglish: "Hamaari Soch — 10 Vishwas →", hi: "हमारी सोच — 10 विश्वास →" },
     link2: { en: "Problems Board →",               hinglish: "Samasya Board →",            hi: "समस्या बोर्ड →" },
-    link3: { en: "Finances — Full Transparency →", hinglish: "Paisa — Poora Hisaab →",     hi: "पैसा — पूरा हिसाब →" },
+    link3: { en: "Help Us — Full Transparency →", hinglish: "Help Us — Poora Hisaab →",     hi: "सहयोग करें — पूरा हिसाब →" },
   },
   footer: {
     copy:    { en: "© 2026 Asli Dharmi — Philosophy in Action", hinglish: "© 2026 Asli Dharmi — Philosophy in Action", hi: "© 2026 असली धर्मी — कर्म में दर्शन" },
