@@ -10,9 +10,13 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 // ─── Page copy (trilingual) — /services/event-management ──────────────────
 // Services & Bundles spec 2026-09-02 §5. Hard rules: no founder name, no
 // geography, no fabricated proof, no pricing, WhatsApp-only CTA.
-// Antim Vidai (§5a) is deliberately NOT part of the bundle-card list below —
-// it gets its own standalone, no-motion, no-ochre section. Do not fold it
-// back into the grid.
+// DEVIATION FROM SPEC §5a (Rajat's ruling, post-preview): Antim Vidai is now
+// the 5th card INSIDE C.bundles / the grid below — NOT a standalone section.
+// Rajat's note: he wants it in the row, not exiled; keep it quieter than the
+// other four instead (muted:true → no ochre, no hover, no numeral, no
+// entrance animation — renders at full opacity straight from server HTML).
+// Do NOT "restore" the standalone section; that was the previous design,
+// superseded here.
 const C = {
   heroEyebrow: { en: "Event Management", hinglish: "Event Management", hi: "इवेंट मैनेजमेंट" },
   heroTitle: { en: "One Team, Every", hinglish: "Ek Team, Har", hi: "एक टीम, हर" },
@@ -35,6 +39,7 @@ const C = {
         hi: "कार्ड + डिजिटल आमंत्रण, सजावट, खाना, मेहंदी, मेकओवर, सिलाई, फ़ोटो + रील्स, परिवहन, ख़रीदारी में साथ, मेहमान-व्यवस्था, इवेंट कैप्टन, 3D स्टेज प्रीव्यू",
       },
       size: "large" as const,
+      muted: false as const,
     },
     {
       title: { en: "Birthday", hinglish: "Birthday", hi: "बर्थडे" },
@@ -44,6 +49,7 @@ const C = {
         hi: "सजावट, खाना, कार्ड्स, फ़ोटो/रील्स, क्राफ़्ट, 3D थीम",
       },
       size: "standard" as const,
+      muted: false as const,
     },
     {
       title: { en: "Griha Pravesh", hinglish: "Griha Pravesh", hi: "गृह प्रवेश" },
@@ -53,6 +59,7 @@ const C = {
         hi: "सजावट, खाना, फ़ोटो, परिवहन, बिग एसेट रिकॉर्डिंग",
       },
       size: "standard" as const,
+      muted: false as const,
     },
     {
       title: { en: "Nayi Gaadi", hinglish: "Nayi Gaadi", hi: "नई गाड़ी" },
@@ -62,6 +69,19 @@ const C = {
         hi: "फ़ोटो/रील्स, सजावट, बिग एसेट रिकॉर्डिंग",
       },
       size: "standard" as const,
+      muted: false as const,
+    },
+    // Antim Vidai — 5th card, deliberately muted (see deviation note above).
+    // title/items reuse the approved antimEyebrow/antimBody copy below verbatim.
+    {
+      title: { en: "Last Farewell", hinglish: "Antim Vidai", hi: "अंतिम विदाई" },
+      items: {
+        en: "For the last farewell. Transport, rituals, paperwork, and someone standing beside your family when it is hardest to stand alone.",
+        hinglish: "Antim vidai ke waqt. Transport, riti-rivaaj, kaagzi kaam, aur parivaar ke saath khade rehna — jab akela khada hona sabse mushkil hota hai.",
+        hi: "अंतिम विदाई के समय। परिवहन, रीति-रिवाज, काग़ज़ी काम, और आपके परिवार के साथ खड़े रहना — जब अकेला खड़ा होना सबसे मुश्किल होता है।",
+      },
+      size: "standard" as const,
+      muted: true as const,
     },
   ],
 
@@ -96,13 +116,6 @@ const C = {
       body: { en: "Your story is ready to post before the night is over.", hinglish: "Raat khatam hone se pehle aapki story post karne ke liye taiyaar hai.", hi: "रात ख़त्म होने से पहले आपकी कहानी पोस्ट करने के लिए तैयार है।" },
     },
   ],
-
-  antimEyebrow: { en: "Last Farewell", hinglish: "Antim Vidai", hi: "अंतिम विदाई" },
-  antimBody: {
-    en: "For the last farewell. Transport, rituals, paperwork, and someone standing beside your family when it is hardest to stand alone.",
-    hinglish: "Antim vidai ke waqt. Transport, riti-rivaaj, kaagzi kaam, aur parivaar ke saath khade rehna — jab akela khada hona sabse mushkil hota hai.",
-    hi: "अंतिम विदाई के समय। परिवहन, रीति-रिवाज, काग़ज़ी काम, और आपके परिवार के साथ खड़े रहना — जब अकेला खड़ा होना सबसे मुश्किल होता है।",
-  },
 
   ctaHeading: { en: "Talk to Us About Your Event", hinglish: "Apne Event Ke Baare Mein Baat Karein", hi: "अपने इवेंट के बारे में बात करें" },
   ctaSub: { en: "One conversation. One person. No forms.", hinglish: "Ek baatcheet. Ek insaan. Koi form nahi.", hi: "एक बातचीत। एक व्यक्ति। कोई फ़ॉर्म नहीं।" },
@@ -152,7 +165,7 @@ export default function EventManagementPage() {
         </div>
       </section>
 
-      {/* ── (1) FIVE LIFE-MOMENT BUNDLE CARDS (4 cards here — Shaadi spans 2 cols; the 5th moment, Antim Vidai, is the standalone section below) ── */}
+      {/* ── (1) FIVE LIFE-MOMENT BUNDLE CARDS — all 5 moments in the grid; Shaadi spans 2 cols (6 col-units / md:grid-cols-3 = exactly 2 rows). Antim Vidai is the 5th card, deliberately muted (see deviation note in C above) — no ochre, no hover, no numeral, no entrance animation, full opacity from server HTML. ── */}
       <section className="px-6 md:px-16 py-24">
         <div className="max-w-6xl mx-auto">
           <RevealBlock>
@@ -163,36 +176,41 @@ export default function EventManagementPage() {
           </RevealBlock>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {C.bundles.map((bnd, i) => (
-              <motion.div
-                key={bnd.title.en}
-                initial={reduce ? false : { opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: i * 0.08, ease: EASE }}
-                viewport={{ once: true, margin: "-40px" }}
-                className={bnd.size === "large" ? "md:col-span-2" : ""}
-              >
-                <div className="flex flex-col h-full p-8 border border-charcoal/10 hover:border-ochre/20 transition-colors duration-300 min-h-[210px]">
-                  <h3 className="font-heading text-2xl text-charcoal font-semibold mb-4 leading-snug">
+            {C.bundles.map((bnd, i) =>
+              bnd.muted ? (
+                // Antim Vidai — no motion.div wrapper at all (no initial/whileInView),
+                // so this card renders at opacity:1 straight from the server HTML.
+                // No ochre, no hover-border, no numeral — quieter than its neighbours.
+                <div
+                  key={bnd.title.en}
+                  className="flex flex-col justify-center h-full p-8 border border-charcoal/10 bg-charcoal/5 min-h-[210px]"
+                >
+                  <p className="font-sans text-xs uppercase tracking-wide text-charcoal/50 mb-4">
                     {tx(bnd.title, lang)}
-                  </h3>
-                  <p className="font-sans text-sm text-charcoal/55 leading-relaxed">{tx(bnd.items, lang)}</p>
+                  </p>
+                  <p className="font-sans text-base text-charcoal/70 leading-loose">
+                    {tx(bnd.items, lang)}
+                  </p>
                 </div>
-              </motion.div>
-            ))}
+              ) : (
+                <motion.div
+                  key={bnd.title.en}
+                  initial={reduce ? false : { opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: i * 0.08, ease: EASE }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  className={bnd.size === "large" ? "md:col-span-2" : ""}
+                >
+                  <div className="flex flex-col h-full p-8 border border-charcoal/10 hover:border-ochre/20 transition-colors duration-300 min-h-[210px]">
+                    <h3 className="font-heading text-2xl text-charcoal font-semibold mb-4 leading-snug">
+                      {tx(bnd.title, lang)}
+                    </h3>
+                    <p className="font-sans text-sm text-charcoal/55 leading-relaxed">{tx(bnd.items, lang)}</p>
+                  </div>
+                </motion.div>
+              )
+            )}
           </div>
-        </div>
-      </section>
-
-      {/* ── (1a) ANTIM VIDAI — standalone, no imagery, no ochre, no motion (§5a) ── */}
-      <section className="px-6 md:px-16 py-20 bg-charcoal/5">
-        <div className="max-w-xl mx-auto text-center">
-          <p className="font-sans text-xs uppercase tracking-wide text-charcoal/50 mb-5">
-            {tx(C.antimEyebrow, lang)}
-          </p>
-          <p className="font-sans text-base text-charcoal/70 leading-loose">
-            {tx(C.antimBody, lang)}
-          </p>
         </div>
       </section>
 
