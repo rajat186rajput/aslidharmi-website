@@ -16,6 +16,7 @@ export const t = {
   nav: {
     // ── Live nav (6 IA items): brand · soch · products · skills · help · join ──
     soch:      { en: "Our Soch",            hinglish: "Hamari Soch",          hi: "हमारी सोच" },
+    services:  { en: "Services",            hinglish: "Services",             hi: "सेवाएँ" },
     products:  { en: "Products & Services", hinglish: "Products & Services",  hi: "उत्पाद और सेवाएँ" },
     skills:    { en: "Skills",              hinglish: "Skills",               hi: "कौशल" },
     help:      { en: "Help Us",             hinglish: "Help Us",              hi: "सहयोग करें" },
@@ -99,15 +100,18 @@ export const t = {
     cta: { en: "Join — Now →", hinglish: "Judiye — Abhi →", hi: "जुड़ें — अभी →" },
   },
   home: {
-    servicesLabel: { en: "What We Do", hinglish: "Hum Kya Karte Hain", hi: "हम क्या करते हैं" },
-    servicesTitle: { en: "Four Works, One Mission", hinglish: "Char Kaam, Ek Mission", hi: "चार काम, एक मिशन" },
-    servicesIntro: {
+    // Renamed from home.services* → home.initiatives* (2026-09-02, Services & Bundles spec §7) —
+    // these 4 cards are the Hamari Soch philosophy-initiative list, not the new paid services
+    // band below (home.servicesBand*). Mechanical rename only, zero visual change.
+    initiativesLabel: { en: "What We Do", hinglish: "Hum Kya Karte Hain", hi: "हम क्या करते हैं" },
+    initiativesTitle: { en: "Four Works, One Mission", hinglish: "Char Kaam, Ek Mission", hi: "चार काम, एक मिशन" },
+    initiativesIntro: {
       en:       "Asli Dharmi isn't just a thought — it's work on the ground. Every effort has one aim: to make people independent, not dependent.",
       hinglish: "Asli Dharmi sirf soch nahi — zameen pe kaam hai. Har kaam ka ek hi maqsad: insaan ko dependent nahi, independent banana.",
       hi:       "असली धर्मी सिर्फ़ सोच नहीं — ज़मीन पर काम है। हर काम का एक ही मक़सद: इंसान को परतंत्र नहीं, स्वतंत्र बनाना।",
     },
     learnMore: { en: "Learn More →", hinglish: "Aur Jaano →", hi: "और जानो →" },
-    services: [
+    initiatives: [
       {
         num: "01",
         href: "/hamari-soch#kaam",
@@ -156,6 +160,21 @@ export const t = {
     link1: { en: "Our Philosophy — 10 Beliefs →", hinglish: "Hamaari Soch — 10 Vishwas →", hi: "हमारी सोच — 10 विश्वास →" },
     link2: { en: "Problems Board →",               hinglish: "Samasya Board →",            hi: "समस्या बोर्ड →" },
     link3: { en: "Help Us — Full Transparency →", hinglish: "Help Us — Poora Hisaab →",     hi: "सहयोग करें — पूरा हिसाब →" },
+    // Services & Bundles 2026-09-02 §7 — narrow, single-CTA band routing to /services.
+    // Fresh key names (not reusing the old "services" name) to avoid a second thing
+    // called "Services"/"What We Do" reading as a duplicate on the same page.
+    servicesBandEyebrow: { en: "Also — We Do Paid Work", hinglish: "Aur — Paid Kaam Bhi", hi: "और — भुगतान वाला काम भी" },
+    servicesBandTitle: {
+      en:       "Planning an event? We handle it, start to finish.",
+      hinglish: "Event plan kar rahe ho? Hum shuru se aakhir tak sambhalte hain.",
+      hi:       "इवेंट प्लान कर रहे हो? हम शुरू से अंत तक संभालते हैं।",
+    },
+    servicesBandSub: {
+      en:       "Event management, technical services, and handmade craft — one team.",
+      hinglish: "Event management, technical services, aur handmade craft — ek team.",
+      hi:       "इवेंट मैनेजमेंट, तकनीकी सेवाएँ, और हस्तनिर्मित शिल्प — एक टीम।",
+    },
+    servicesBandCta: { en: "See Our Services →", hinglish: "Hamari Services Dekho →", hi: "हमारी सेवाएँ देखें →" },
   },
   footer: {
     copy:    { en: "© 2026 Asli Dharmi — Philosophy in Action", hinglish: "© 2026 Asli Dharmi — Philosophy in Action", hi: "© 2026 असली धर्मी — कर्म में दर्शन" },
