@@ -15,7 +15,7 @@ export default function HomePage() {
       {/* Three.js cosmos hero — includes nav, scroll sections, and marquee */}
       <CosmosHero />
 
-      {/* ── What We Do — Services (services-forward) ── */}
+      {/* ── What We Do — Initiatives (philosophy-in-action, formerly "Services") ── */}
       <section className="px-6 md:px-16 py-28 bg-cream relative z-10 border-t border-charcoal/10">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -24,17 +24,17 @@ export default function HomePage() {
             transition={{ duration: 0.7, ease: EASE }}
             viewport={{ once: true }}
           >
-            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/70 mb-4">{tx(t.home.servicesLabel, lang)}</p>
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/70 mb-4">{tx(t.home.initiativesLabel, lang)}</p>
             <h2 className="font-heading text-4xl md:text-5xl text-charcoal font-semibold mb-5 leading-tight">
-              {tx(t.home.servicesTitle, lang)}
+              {tx(t.home.initiativesTitle, lang)}
             </h2>
             <p className="font-sans text-base text-charcoal/55 max-w-2xl leading-relaxed mb-16">
-              {tx(t.home.servicesIntro, lang)}
+              {tx(t.home.initiativesIntro, lang)}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {t.home.services.map((s, i) => (
+            {t.home.initiatives.map((s, i) => (
               <motion.div
                 key={s.num}
                 initial={{ opacity: 0, y: 30 }}
@@ -79,6 +79,31 @@ export default function HomePage() {
             <Link href="/help-us" className="hover:text-ochre transition-colors">{tx(t.home.link3, lang)}</Link>
           </motion.div>
         </div>
+      </section>
+
+      {/* ── Services band — paid work, additive to the soch above (Services & Bundles 2026-09-02 §7) ── */}
+      <section className="px-6 md:px-16 py-24 bg-cream border-t border-charcoal/10 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: EASE }}
+          viewport={{ once: true, margin: "-40px" }}
+          className="max-w-3xl mx-auto text-center"
+        >
+          <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/70 mb-6">{tx(t.home.servicesBandEyebrow, lang)}</p>
+          <h2 className="font-heading text-3xl md:text-4xl text-charcoal font-semibold mb-5 leading-tight">
+            {tx(t.home.servicesBandTitle, lang)}
+          </h2>
+          <p className="font-sans text-base text-charcoal/55 leading-relaxed mb-10">
+            {tx(t.home.servicesBandSub, lang)}
+          </p>
+          <Link
+            href="/services"
+            className="inline-flex items-center gap-3 px-10 py-5 bg-ochre text-cream font-sans font-medium text-sm tracking-widest uppercase hover:bg-charcoal transition-colors duration-300 rounded-sm"
+          >
+            {tx(t.home.servicesBandCta, lang)}
+          </Link>
+        </motion.div>
       </section>
 
       {/* Value Props — philosophy / "what happens here" (supporting section) */}

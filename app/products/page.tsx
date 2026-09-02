@@ -86,8 +86,8 @@ const C = {
       desc: { en: "Tailored and woven goods — stitched by trained hands, priced fairly.", hinglish: "Tailored aur woven goods — trained haathon se sila, fair price pe.", hi: "सिले और बुने सामान — प्रशिक्षित हाथों से सिला, उचित दाम पर।" },
     },
     {
-      title: { en: "Digital Services", hinglish: "Digital Services", hi: "डिजिटल सेवाएँ" },
-      desc: { en: "Skill-based services delivered remotely — from data entry to design, by skilled providers.", hinglish: "Skill-based services remotely — data entry se design tak, skilled providers se.", hi: "कौशल-आधारित सेवाएँ दूर से — डेटा एंट्री से डिज़ाइन तक, कुशल प्रदाताओं से।" },
+      title: { en: "Digital Work by Makers", hinglish: "Makers ka Digital Kaam", hi: "मेकर्स का डिजिटल काम" },
+      desc: { en: "Skill-based work delivered remotely — from data entry to design, by skilled providers.", hinglish: "Skill-based kaam remotely — data entry se design tak, skilled providers se.", hi: "कौशल-आधारित काम दूर से — डेटा एंट्री से डिज़ाइन तक, कुशल प्रदाताओं से।" },
     },
   ],
 

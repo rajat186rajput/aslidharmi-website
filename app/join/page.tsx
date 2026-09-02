@@ -52,11 +52,11 @@ const WHAT_YOU_GET: Array<{ num: string; title: Tri; body: Tri }> = [
   },
   {
     num: "04",
-    title: { en: "Direct feedback from Rajat", hinglish: "Rajat se direct feedback", hi: "रजत से सीधा फ़ीडबैक" },
+    title: { en: "Direct feedback, no gatekeeping", hinglish: "Direct feedback, koi gatekeeping nahi", hi: "सीधा फ़ीडबैक, कोई गेटकीपिंग नहीं" },
     body: {
-      en: "Rajat personally reads and responds to any genuine project idea. No middleman, no auto-reply.",
-      hinglish: "Koi bhi genuine project idea pe Rajat khud padhe aur respond kare. Koi middleman nahi, koi auto-reply nahi.",
-      hi: "किसी भी सच्चे प्रोजेक्ट आइडिया पर रजत खुद पढ़ता और जवाब देता है। कोई बिचौलिया नहीं, कोई ऑटो-रिप्लाई नहीं।",
+      en: "We personally read and respond to any genuine project idea. No middleman, no auto-reply.",
+      hinglish: "Koi bhi genuine project idea pe hum khud padhte aur respond karte hain. Koi middleman nahi, koi auto-reply nahi.",
+      hi: "किसी भी सच्चे प्रोजेक्ट आइडिया पर हम ख़ुद पढ़ते और जवाब देते हैं। कोई बिचौलिया नहीं, कोई ऑटो-रिप्लाई नहीं।",
     },
   },
 ];
@@ -109,9 +109,9 @@ const C = {
   },
   formHeading: { en: "Introduce Yourself", hinglish: "Apna Parichay Do", hi: "अपना परिचय दो" },
   formSub: {
-    en: "Fill the form below — honestly. No one's judging here. Rajat reads it himself and responds. No auto-reply.",
-    hinglish: "Neeche form bharo — honestly. Koi judgemental nahi hai yahan. Rajat khud padhega aur respond karega. Koi auto-reply nahi.",
-    hi: "नीचे फ़ॉर्म भरो — ईमानदारी से। यहाँ कोई जजमेंटल नहीं है। रजत खुद पढ़ेगा और जवाब देगा। कोई ऑटो-रिप्लाई नहीं।",
+    en: "Fill the form below — honestly. No one's judging here. We read it ourselves and respond. No auto-reply.",
+    hinglish: "Neeche form bharo — honestly. Koi judgemental nahi hai yahan. Hum khud padhenge aur respond karenge. Koi auto-reply nahi.",
+    hi: "नीचे फ़ॉर्म भरो — ईमानदारी से। यहाँ कोई जजमेंटल नहीं है। हम ख़ुद पढ़ेंगे और जवाब देंगे। कोई ऑटो-रिप्लाई नहीं।",
   },
   formLoading: { en: "Loading form…", hinglish: "Form load ho raha hai…", hi: "फ़ॉर्म लोड हो रहा है…" },
   formPrivacy: {

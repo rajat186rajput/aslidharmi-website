@@ -16,9 +16,9 @@ const C = {
   },
   emailLabel: { en: "Email", hinglish: "Email", hi: "ईमेल" },
   emailSub: {
-    en: "Collaborations, feedback, or anything — Rajat reads personally.",
-    hinglish: "Collaborations, feedback, ya kuch bhi — Rajat personally padhta hai.",
-    hi: "कोलैबोरेशन, फ़ीडबैक, या कुछ भी — रजत खुद पढ़ता है।",
+    en: "Collaborations, feedback, or anything — we read every message ourselves.",
+    hinglish: "Collaborations, feedback, ya kuch bhi — hum khud har message padhte hain.",
+    hi: "कोलैबोरेशन, फ़ीडबैक, या कुछ भी — हम हर संदेश ख़ुद पढ़ते हैं।",
   },
   joinPre: { en: "Want to join the movement? ", hinglish: "Movement mein judna hai? ", hi: "आंदोलन में जुड़ना है? " },
   joinLink: { en: "Join here", hinglish: "Yahan join karo", hi: "यहाँ जुड़ें" },
