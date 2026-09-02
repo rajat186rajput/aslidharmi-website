@@ -144,7 +144,7 @@ export default function ContentPage() {
           transition={{ duration: 0.9, ease: EASE }}
           className="max-w-4xl relative"
         >
-          <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/60 mb-6">{tx(C.eyebrow, lang)}</p>
+          <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-light mb-6">{tx(C.eyebrow, lang)}</p>
           <h1 className="font-heading text-5xl md:text-7xl text-cream font-semibold leading-[0.92] mb-6">
             {tx(C.h1a, lang)}<br />
             <em className="text-ochre">{tx(C.h1em, lang)}</em>
@@ -161,7 +161,7 @@ export default function ContentPage() {
           <RevealBlock>
             <div className="p-8 border border-ochre/20 grid grid-cols-1 md:grid-cols-2 gap-10">
               <div>
-                <p className="font-sans text-xs uppercase tracking-wider text-ochre/60 mb-4">{tx(C.formatLabel, lang)}</p>
+                <p className="font-sans text-xs uppercase tracking-wider text-ochre-light mb-4">{tx(C.formatLabel, lang)}</p>
                 <h3 className="font-heading text-2xl text-cream font-semibold mb-4 leading-snug whitespace-pre-line">
                   {tx(C.formatHeading, lang)}
                 </h3>
@@ -171,7 +171,7 @@ export default function ContentPage() {
               </div>
               <div className="space-y-5 border-l border-cream/8 pl-10">
                 <div>
-                  <p className="font-sans text-xs uppercase tracking-wider text-ochre/60 mb-1">Gyani Tau</p>
+                  <p className="font-sans text-xs uppercase tracking-wider text-ochre-light mb-1">Gyani Tau</p>
                   <p className="font-sans text-sm text-cream/60 leading-relaxed">
                     {tx(C.gyaniBody, lang)}
                   </p>
@@ -274,7 +274,7 @@ export default function ContentPage() {
                 </a>
               </div>
               <div className="p-8 border border-cream/8">
-                <p className="font-sans text-xs uppercase tracking-wider text-ochre/60 mb-3">@aslidharmi</p>
+                <p className="font-sans text-xs uppercase tracking-wider text-ochre-light mb-3">@aslidharmi</p>
                 <p className="font-heading text-lg text-cream/60 leading-relaxed italic">
                   {tx(C.ytQuote, lang)}
                 </p>
@@ -298,7 +298,7 @@ export default function ContentPage() {
                   {tx(C.essayBody, lang)}
                 </p>
                 <div className="border border-cream/8 p-6 mb-8">
-                  <p className="font-sans text-xs text-ochre/60 uppercase tracking-wider mb-2">{tx(C.firstEssayLabel, lang)}</p>
+                  <p className="font-sans text-xs text-ochre-light uppercase tracking-wider mb-2">{tx(C.firstEssayLabel, lang)}</p>
                   <p className="font-heading text-lg text-cream/70">
                     {tx(C.firstEssay, lang)}
                   </p>

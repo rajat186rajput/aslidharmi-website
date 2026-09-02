@@ -153,7 +153,7 @@ export default function EventManagementClient() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: EASE }}
           >
-            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/70 mb-6">{tx(C.heroEyebrow, lang)}</p>
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-deep mb-6">{tx(C.heroEyebrow, lang)}</p>
             <h1 className="font-heading text-5xl md:text-7xl text-charcoal font-semibold leading-[0.92] mb-8">
               {tx(C.heroTitle, lang)} <em className="text-ochre">{tx(C.heroEm, lang)}</em>
             </h1>
@@ -168,7 +168,7 @@ export default function EventManagementClient() {
       <section className="px-6 md:px-16 py-24">
         <div className="max-w-6xl mx-auto">
           <RevealBlock>
-            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/70 mb-4">{tx(C.bundlesLabel, lang)}</p>
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-deep mb-4">{tx(C.bundlesLabel, lang)}</p>
             <h2 className="font-heading text-4xl md:text-5xl text-charcoal font-semibold mb-16 leading-tight">
               {tx(C.bundlesTitle, lang)}
             </h2>
@@ -228,7 +228,7 @@ export default function EventManagementClient() {
         />
         <div className="max-w-4xl mx-auto relative">
           <RevealBlock>
-            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/70 mb-4">{tx(C.coverageLabel, lang)}</p>
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-light mb-4">{tx(C.coverageLabel, lang)}</p>
             <h2 className="font-heading text-3xl md:text-4xl text-cream font-semibold mb-12 leading-tight">
               {tx(C.coverageTitle, lang)}
             </h2>

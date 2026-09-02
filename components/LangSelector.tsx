@@ -14,6 +14,13 @@ export function LangSelector({ dark = false }: { dark?: boolean }) {
         <button
           key={l}
           onClick={() => setLang(l)}
+          // P2-5 (consistency-fix-spec-2026-09-02): हिं reads optically smaller/cramped next
+          // to HG/EN at the same class string — lang="hi" is correct for a11y regardless,
+          // and data-devanagari is a narrow, button-scoped hook (NOT the sitewide
+          // [lang="hi"]/[data-lang="hi"] body-copy rules in globals.css, which are a
+          // different concept — "Hindi is the active reading language" — left untouched).
+          lang={l === "hi" ? "hi" : undefined}
+          data-devanagari={l === "hi" ? "" : undefined}
           className={`relative px-2.5 py-1 font-sans text-xs font-medium tracking-wider transition-colors duration-200 ${
             lang === l
               ? dark

@@ -144,7 +144,7 @@ export default function JoinPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: EASE }}
           >
-            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/70 mb-8">{tx(C.heroEyebrow, lang)}</p>
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-light mb-8">{tx(C.heroEyebrow, lang)}</p>
             <h1 className="font-heading text-5xl md:text-8xl text-cream font-semibold leading-[0.88] mb-8">
               {tx(C.heroH1a, lang)}<br />
               <em className="text-ochre">{tx(C.heroH1em, lang)}</em>
@@ -174,7 +174,7 @@ export default function JoinPage() {
       <section id="what-you-get" className="px-6 md:px-16 py-24 border-b border-charcoal/8">
         <div className="max-w-5xl mx-auto">
           <RevealBlock>
-            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/70 mb-4">{tx(C.getLabel, lang)}</p>
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-deep mb-4">{tx(C.getLabel, lang)}</p>
             <h2 className="font-heading text-4xl md:text-5xl text-charcoal font-semibold leading-[0.95] mb-16 max-w-xl">
               {tx(C.getHeadingA, lang)}<br /><em className="text-ochre">{tx(C.getHeadingEm, lang)}</em>
             </h2>
@@ -198,7 +198,7 @@ export default function JoinPage() {
       <section className="bg-charcoal px-6 md:px-16 py-24">
         <div className="max-w-5xl mx-auto">
           <RevealBlock>
-            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/60 mb-4">{tx(C.ccLabel, lang)}</p>
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-light mb-4">{tx(C.ccLabel, lang)}</p>
             <h2 className="font-heading text-4xl md:text-5xl text-cream font-semibold leading-[0.95] mb-6 max-w-2xl">
               {tx(C.ccHeadingA, lang)}<br /><em className="text-ochre">{tx(C.ccHeadingEm, lang)}</em>
             </h2>
@@ -210,7 +210,7 @@ export default function JoinPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Earn */}
             <RevealBlock>
-              <p className="font-sans text-xs uppercase tracking-widest text-ochre mb-6">{tx(C.earnLabel, lang)}</p>
+              <p className="font-sans text-xs uppercase tracking-widest text-ochre-light mb-6">{tx(C.earnLabel, lang)}</p>
               <div className="space-y-4">
                 {CREDIT_EARN.map(e => (
                   <div key={e.system} className="flex gap-4 pb-4 border-b border-cream/8">
@@ -226,7 +226,7 @@ export default function JoinPage() {
 
             {/* Spend */}
             <RevealBlock delay={0.1}>
-              <p className="font-sans text-xs uppercase tracking-widest text-ochre mb-6">{tx(C.spendLabel, lang)}</p>
+              <p className="font-sans text-xs uppercase tracking-widest text-ochre-light mb-6">{tx(C.spendLabel, lang)}</p>
               <div className="space-y-4">
                 {CREDIT_SPEND.map((s, i) => (
                   <div key={i} className="flex gap-4 pb-4 border-b border-cream/8">
@@ -243,7 +243,7 @@ export default function JoinPage() {
           {/* Hard locks */}
           <RevealBlock className="mt-12">
             <div className="p-8 border border-ochre/20">
-              <p className="font-sans text-xs uppercase tracking-wider text-ochre/60 mb-3">{tx(C.locksLabel, lang)}</p>
+              <p className="font-sans text-xs uppercase tracking-wider text-ochre-light mb-3">{tx(C.locksLabel, lang)}</p>
               <p className="font-sans text-sm text-cream/45 leading-relaxed">
                 {tx(C.locks, lang)}
               </p>

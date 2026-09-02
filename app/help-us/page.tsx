@@ -182,7 +182,7 @@ export default function HelpUsPage() {
           transition={{ duration: 0.9, ease: EASE }}
           className="max-w-4xl relative"
         >
-          <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/60 mb-6">{tx(C.eyebrow, lang)}</p>
+          <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-light mb-6">{tx(C.eyebrow, lang)}</p>
           <h1 className="font-heading text-5xl md:text-7xl text-cream font-semibold leading-[0.92] mb-6">
             {tx(C.h1a, lang)}<br />
             <em className="text-ochre">{tx(C.h1em, lang)}</em>
@@ -203,7 +203,7 @@ export default function HelpUsPage() {
             viewport={{ once: true }}
             className="mb-12"
           >
-            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/60 mb-6">{tx(C.helpEyebrow, lang)}</p>
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-light mb-6">{tx(C.helpEyebrow, lang)}</p>
             <h2 className="font-heading text-4xl md:text-5xl text-cream font-semibold leading-tight mb-5">
               {tx(C.helpTitleA, lang)}<em className="text-ochre">{tx(C.helpTitleEm, lang)}</em>{tx(C.helpTitleB, lang)}
             </h2>
@@ -352,7 +352,7 @@ export default function HelpUsPage() {
       <section className="px-6 md:px-16 pb-20">
         <div className="max-w-3xl mx-auto">
           <div className="p-8 border border-ochre/20">
-            <p className="font-sans text-xs uppercase tracking-wider text-ochre/60 mb-3">{tx(C.principleLabel, lang)}</p>
+            <p className="font-sans text-xs uppercase tracking-wider text-ochre-light mb-3">{tx(C.principleLabel, lang)}</p>
             <p className="font-sans text-base text-cream/50 leading-relaxed">
               {tx(C.principle, lang)}
             </p>

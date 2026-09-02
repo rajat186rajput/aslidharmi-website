@@ -11,11 +11,21 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 // Services & Bundles spec 2026-09-02. Hard rules: no founder name, no
 // geography, no fabricated proof, no pricing, WhatsApp-only CTA.
 const C = {
-  heroEyebrow: { en: "Piece of Peace", hinglish: "Piece of Peace", hi: "Piece of Peace" },
+  // P2-2 (consistency-fix-spec-2026-09-02): eyebrow was "Piece of Peace", repeating the h1's
+  // own phrase verbatim — changed to a plain category label, matching t.nav.services in
+  // lib/i18n.tsx, consistent with every other sub-page's eyebrow-then-headline pattern.
+  heroEyebrow: { en: "Services", hinglish: "Services", hi: "सेवाएँ" },
   heroTitle: { en: "A", hinglish: "Ek", hi: "शांति का एक" },
   heroEm: { en: "Piece", hinglish: "Piece", hi: "टुकड़ा" },
   heroTail: { en: "of Peace", hinglish: "of Peace", hi: "" },
-  heroSub: { en: "Peace in Privacy.", hinglish: "Peace in Privacy.", hi: "गोपनीयता में शांति।" },
+  // P2-3: expanded from the 3-word fragment "Peace in Privacy." to a full sentence matching
+  // every sibling hero's heroIntro/heroSub length and register (spec's proposed copy, taste —
+  // Rajat can reword later; the objective defect fixed here is the length/register mismatch).
+  heroSub: {
+    en: "Every service handled by one team — quietly, without a hundred phone calls.",
+    hinglish: "Har service ek team sambhalti hai — chup-chaap, sau phone calls ke bina.",
+    hi: "हर सेवा एक टीम संभालती है — चुपचाप, सौ फ़ोन कॉल्स के बिना।",
+  },
 
   bucketsLabel: { en: "What We Do", hinglish: "Hum Kya Karte Hain", hi: "हम क्या करते हैं" },
   bucketsTitle: { en: "Three Ways We Help", hinglish: "Teen Tareeke Se Madad", hi: "मदद के तीन तरीक़े" },
@@ -107,7 +117,7 @@ export default function ServicesClient() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: EASE }}
           >
-            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/70 mb-6">{tx(C.heroEyebrow, lang)}</p>
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-deep mb-6">{tx(C.heroEyebrow, lang)}</p>
             <h1 className="font-heading text-5xl md:text-7xl text-charcoal font-semibold leading-[0.92] mb-8">
               {tx(C.heroTitle, lang)} <em className="text-ochre">{tx(C.heroEm, lang)}</em> {tx(C.heroTail, lang)}
             </h1>
@@ -122,7 +132,7 @@ export default function ServicesClient() {
       <section className="px-6 md:px-16 py-24">
         <div className="max-w-6xl mx-auto">
           <RevealBlock>
-            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/70 mb-4">{tx(C.bucketsLabel, lang)}</p>
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-deep mb-4">{tx(C.bucketsLabel, lang)}</p>
             <h2 className="font-heading text-4xl md:text-5xl text-charcoal font-semibold mb-16 leading-tight">
               {tx(C.bucketsTitle, lang)}
             </h2>

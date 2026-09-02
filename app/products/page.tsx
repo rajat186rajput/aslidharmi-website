@@ -125,7 +125,7 @@ export default function ProductsPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: EASE }}
           >
-            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/70 mb-6">{tx(C.heroEyebrow, lang)}</p>
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-deep mb-6">{tx(C.heroEyebrow, lang)}</p>
             <h1 className="font-heading text-5xl md:text-7xl text-charcoal font-semibold leading-[0.92] mb-8">
               {tx(C.heroTitle, lang)}<br />
               <em className="text-ochre">{tx(C.heroEm, lang)}</em>
@@ -169,7 +169,7 @@ export default function ProductsPage() {
         <div className="max-w-3xl mx-auto text-center mb-12">
           <RevealBlock>
             <div className="w-px h-16 bg-ochre/40 mx-auto mb-8" />
-            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/70 mb-6">{tx(C.waitlistEyebrow, lang)}</p>
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-deep mb-6">{tx(C.waitlistEyebrow, lang)}</p>
             <h2 className="font-heading text-4xl md:text-5xl text-charcoal font-semibold mb-6 leading-tight">{tx(C.waitlistTitle, lang)}</h2>
             <p className="font-sans text-base text-charcoal/55 max-w-xl mx-auto leading-relaxed">{tx(C.waitlistSub, lang)}</p>
           </RevealBlock>
