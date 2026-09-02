@@ -188,6 +188,20 @@ html[data-lang="hi"] figcaption {
   letter-spacing: 0 !important;
 }
 
+/* ── Home hero content: extra breathing room under the floating nav pill (≥768px) ──
+   The desktop/tablet nav is a floating pill (`fixed`, top-5 + ~48px tall, bottom edge
+   ≈68px) that doesn't take document-flow space, unlike the mobile fixed header (56px,
+   flush to the top, already cleared by the 70px base padding below). At ≥768px the
+   hero's 70px padding-top left only ~2-6px between the pill's bottom edge and the
+   eyebrow text (measured on live production) — this nudges it up slightly, only at
+   this breakpoint range, without touching the mobile (390px) value it was tuned
+   against for ridge clearance. */
+@media (min-width: 768px) {
+  .hero-content {
+    padding-top: clamp(82px, 5vh, 170px) !important;
+  }
+}
+
 /* ── Site-wide reduced-motion guard ──
    Honour the user's OS "reduce motion" setting. This neutralises CSS
    transitions/animations globally; Framer Motion scroll/parallax outputs are

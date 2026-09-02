@@ -282,7 +282,7 @@ export const Component = () => {
           justifyContent:'center', so the text block no longer re-centres into whatever the
           WebGL mountain geometry happens to be doing at a given viewport height/aspect —
           clamp() values tuned live at 390/768/1024/1440, see the fix report for the check. */}
-      <div style={{ position: 'relative', zIndex: 10, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center', padding: '0 24px', paddingTop: 'clamp(70px, 5vh, 170px)' }}>
+      <div className="hero-content" style={{ position: 'relative', zIndex: 10, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center', padding: '0 24px', paddingTop: 'clamp(70px, 5vh, 170px)' }}>
         {/* P1-3/P1-4: ochre-light (dark-bg-safe, 6.04:1 on charcoal) instead of solid brand
             ochre (~1.8:1 on this photo) + a text-shadow scrim so it stays legible regardless
             of where the sky gradient happens to be brightest at a given scroll/viewport. */}
@@ -317,8 +317,13 @@ export const Component = () => {
             </React.Fragment>
           ))}
         </h1>
+        {/* Follow-up fix (post-P2-1): the intro paragraph now crosses the ridge line at
+            390/1440, same class of problem as the P1-4 eyebrow — the bg gradient spans
+            near-black to bright gold across the sentence’s width, and flat-color contrast
+            alone cannot fix the bright side (even solid cream only reaches ~1.8:1 there, per
+            measurement). Same text-shadow scrim as the eyebrow + a moderate opacity lift. */}
         <div ref={subtitleRef}>
-          <p className="subtitle-line" style={{ fontFamily: 'var(--font-hind)', fontSize: '18px', color: 'rgba(245,240,232,0.52)', maxWidth: '480px', lineHeight: 1.7, marginBottom: '4px' }}>
+          <p className="subtitle-line" style={{ fontFamily: 'var(--font-hind)', fontSize: '18px', color: 'rgba(245,240,232,0.75)', textShadow: '0 1px 12px rgba(0,0,0,0.55)', maxWidth: '480px', lineHeight: 1.7, marginBottom: '4px' }}>
             {tx(t.hero.sub, lang).split('.')[0]}.
           </p>
         </div>
