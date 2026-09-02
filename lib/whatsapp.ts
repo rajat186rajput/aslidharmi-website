@@ -1,5 +1,6 @@
 // WhatsApp CTA helper — mirrors FormEmbed's PLACEHOLDER-string pattern (components/FormEmbed.tsx).
-// DEV TODO: Rajat to supply the real WhatsApp business number in E.164 format
+// 2026-09-02 ruling: no phone number is published on the site right now — this is
+// deliberately withheld, not merely missing. Format when supplied: E.164
 // (e.g. "91XXXXXXXXXX", no "+", no spaces). One-line swap when ready.
 const WHATSAPP_NUMBER = "PLACEHOLDER_WHATSAPP_NUMBER";
 
