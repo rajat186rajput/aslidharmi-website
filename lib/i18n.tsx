@@ -17,7 +17,7 @@ export const t = {
     // ── Live nav (6 IA items): brand · soch · products · skills · help · join ──
     soch:      { en: "Our Soch",            hinglish: "Hamari Soch",          hi: "हमारी सोच" },
     services:  { en: "Services",            hinglish: "Services",             hi: "सेवाएँ" },
-    products:  { en: "Products & Services", hinglish: "Products & Services",  hi: "उत्पाद और सेवाएँ" },
+    products:  { en: "Products", hinglish: "Products", hi: "उत्पाद" },
     skills:    { en: "Skills",              hinglish: "Skills",               hi: "कौशल" },
     help:      { en: "Help Us",             hinglish: "Help Us",              hi: "सहयोग करें" },
     join:      { en: "Join",                hinglish: "Shaamil Ho",           hi: "जुड़िए" },
