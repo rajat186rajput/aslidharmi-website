@@ -10,11 +10,11 @@ import EventManagementClient from "./EventManagementClient";
 export const metadata: Metadata = {
   title: "Event Management — Asli Dharmi",
   description:
-    "One team for Shaadi, Birthday, Griha Pravesh, Nayi Gaadi, and Antim Vidai — start to finish, reachable over WhatsApp. No pricing, no booking form.",
+    "One team for Shaadi, Birthday, Griha Pravesh, Nayi Gaadi and Antim Vidai — start to finish, one point of contact. No pricing, no booking form.",
   openGraph: {
     title: "Event Management — Asli Dharmi",
     description:
-      "One team for every life moment — start to finish, reachable over WhatsApp.",
+      "One team for every life moment — start to finish, one point of contact.",
     url: "https://aslidharmi.in/services/event-management",
     siteName: "Asli Dharmi",
     locale: "hi_IN",

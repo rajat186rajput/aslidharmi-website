@@ -10,11 +10,11 @@ import ServicesClient from "./ServicesClient";
 export const metadata: Metadata = {
   title: "Services — Asli Dharmi",
   description:
-    "Event management, technical services, and handmade craft — one team, reachable over WhatsApp. No pricing, no booking form, just a conversation.",
+    "Event management, technical services, and handmade craft — one team, one conversation, start to finish. No pricing, no booking form.",
   openGraph: {
     title: "Services — Asli Dharmi",
     description:
-      "Event management, technical services, and handmade craft — one team, reachable over WhatsApp.",
+      "Event management, technical services, and handmade craft — one team, one conversation, start to finish.",
     url: "https://aslidharmi.in/services",
     siteName: "Asli Dharmi",
     locale: "hi_IN",
