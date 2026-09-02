@@ -28,7 +28,7 @@ const C = {
   },
 
   bucketsLabel: { en: "What We Do", hinglish: "Hum Kya Karte Hain", hi: "हम क्या करते हैं" },
-  bucketsTitle: { en: "Three Ways We Help", hinglish: "Teen Tareeke Se Madad", hi: "मदद के तीन तरीक़े" },
+  bucketsTitle: { en: "Four Ways We Help", hinglish: "Chaar Tareeke Se Madad", hi: "मदद के चार तरीक़े" },
 
   buckets: [
     {
@@ -74,6 +74,24 @@ const C = {
         en: "Handmade craft, tailoring, and personal styling — made by skilled hands.",
         hinglish: "Haath se bana craft, tailoring, aur personal styling — skilled haathon se.",
         hi: "हस्तनिर्मित शिल्प, सिलाई, और व्यक्तिगत स्टाइलिंग — कुशल हाथों से।",
+      },
+      linkable: false,
+    },
+    // Hospitality (2026-09-02, Rajat's annotation): hill trips/homestay arranged at OTHER
+    // people's properties for now, not Asli Dharmi's own — copy must not imply ownership,
+    // and no place names (landscape words like "pahad"/"hills" are fine, no town/state names).
+    {
+      num: "04",
+      title: { en: "Hospitality", hinglish: "Hospitality", hi: "आतिथ्य" },
+      items: {
+        en: "Hill Trips · Honeymoon · Family Getaway · Stay Arrangements",
+        hinglish: "Pahad ki Trip · Honeymoon · Parivaar ka Getaway · Thehrne ka Intezaam",
+        hi: "पहाड़ की ट्रिप · हनीमून · परिवार का गेटअवे · ठहरने का इंतज़ाम",
+      },
+      desc: {
+        en: "Two nights in the hills after the wedding — rooms, travel, food, all arranged.",
+        hinglish: "Shaadi ke baad do raat pahad mein — kamre, gaadi, khaana, sab intezaam.",
+        hi: "शादी के बाद पहाड़ में दो रातें — कमरे, गाड़ी, खाना, सब इंतज़ाम।",
       },
       linkable: false,
     },
@@ -138,7 +156,10 @@ export default function ServicesClient() {
             </h2>
           </RevealBlock>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {/* 2-col grid for 4 buckets (was 3-col for 3) — matches the sitewide 4-card pattern
+              already used for the home "What We Do" initiatives band (app/page.tsx) and the
+              /products teaser categories, rather than leaving an orphan on a 3-col grid. */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {C.buckets.map((b, i) => {
               const cardBody = (
                 <>
