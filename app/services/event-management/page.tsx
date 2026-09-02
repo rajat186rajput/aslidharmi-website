@@ -107,6 +107,7 @@ const C = {
   ctaHeading: { en: "Talk to Us About Your Event", hinglish: "Apne Event Ke Baare Mein Baat Karein", hi: "अपने इवेंट के बारे में बात करें" },
   ctaSub: { en: "One conversation. One person. No forms.", hinglish: "Ek baatcheet. Ek insaan. Koi form nahi.", hi: "एक बातचीत। एक व्यक्ति। कोई फ़ॉर्म नहीं।" },
   ctaBtn: { en: "Message Us →", hinglish: "Message Karo →", hi: "संदेश भेजें →" },
+  ctaBtnMail: { en: "Email Us →", hinglish: "Email Karo →", hi: "ईमेल भेजें →" },
 } as const;
 
 function RevealBlock({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
@@ -151,7 +152,7 @@ export default function EventManagementPage() {
         </div>
       </section>
 
-      {/* ── (1) FIVE LIFE-MOMENT BUNDLE CARDS (Shaadi is the 5th moment covered elsewhere in hero copy — 4 cards here + Antim Vidai standalone below) ── */}
+      {/* ── (1) FIVE LIFE-MOMENT BUNDLE CARDS (4 cards here — Shaadi spans 2 cols; the 5th moment, Antim Vidai, is the standalone section below) ── */}
       <section className="px-6 md:px-16 py-24">
         <div className="max-w-6xl mx-auto">
           <RevealBlock>
@@ -210,7 +211,7 @@ export default function EventManagementPage() {
             <h2 className="font-heading text-3xl md:text-4xl text-cream font-semibold mb-12 leading-tight">
               {tx(C.coverageTitle, lang)}
             </h2>
-            <div className="grid grid-cols-2 gap-y-3 gap-x-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-y-3 gap-x-6">
               {C.coverageItems.map((item, i) => (
                 <p key={i} className="font-sans text-sm text-cream/70 leading-relaxed flex items-baseline gap-2">
                   <span className="text-ochre/60">·</span>
@@ -226,9 +227,12 @@ export default function EventManagementPage() {
       <section className="px-6 md:px-16 py-32">
         <div className="max-w-6xl mx-auto">
           <RevealBlock>
-            <p className="font-sans text-xs uppercase tracking-[0.25em] text-charcoal/40 mb-16 text-center">
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-charcoal/40 mb-4 text-center">
               {tx(C.mechanicsLabel, lang)}
             </p>
+            <h2 className="font-heading text-4xl md:text-5xl text-charcoal font-semibold mb-16 text-center leading-tight">
+              {tx(C.mechanicsTitle, lang)}
+            </h2>
           </RevealBlock>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-0 divide-y md:divide-y-0 md:divide-x divide-charcoal/10">
             {C.mechanics.map((m, i) => (
@@ -269,7 +273,7 @@ export default function EventManagementPage() {
               rel={waLink ? "noopener noreferrer" : undefined}
               className="group inline-flex items-center gap-3 px-10 py-5 bg-ochre text-cream font-sans font-medium text-sm tracking-widest uppercase hover:bg-charcoal transition-colors duration-300 rounded-sm"
             >
-              {tx(C.ctaBtn, lang)}
+              {tx(waLink ? C.ctaBtn : C.ctaBtnMail, lang)}
             </a>
           </RevealBlock>
         </div>

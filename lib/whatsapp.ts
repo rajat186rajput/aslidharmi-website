@@ -5,7 +5,8 @@ const WHATSAPP_NUMBER = "PLACEHOLDER_WHATSAPP_NUMBER";
 
 // Working interim channel until the number is set — confirm this is the
 // dedicated brand account (feedback_brand_dedicated_email), never personal Gmail.
-export const WHATSAPP_MAILTO_FALLBACK = "mailto:aslidharmi@gmail.com";
+export const WHATSAPP_MAILTO_FALLBACK =
+  "mailto:aslidharmi@gmail.com?subject=" + encodeURIComponent("Services enquiry");
 
 export function whatsappHref(message: string): string | null {
   if (WHATSAPP_NUMBER.includes("PLACEHOLDER")) return null;

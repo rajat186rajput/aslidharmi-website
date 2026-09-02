@@ -74,6 +74,7 @@ const C = {
   ctaHeading: { en: "Let's talk on WhatsApp", hinglish: "WhatsApp Par Baat Karein", hi: "व्हाट्सऐप पर बात करें" },
   ctaSub: { en: "One conversation. One person. No forms.", hinglish: "Ek baatcheet. Ek insaan. Koi form nahi.", hi: "एक बातचीत। एक व्यक्ति। कोई फ़ॉर्म नहीं।" },
   ctaBtn: { en: "Message Us →", hinglish: "Message Karo →", hi: "संदेश भेजें →" },
+  ctaBtnMail: { en: "Email Us →", hinglish: "Email Karo →", hi: "ईमेल भेजें →" },
 } as const;
 
 function RevealBlock({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
@@ -165,7 +166,7 @@ export default function ServicesPage() {
                       {cardBody}
                     </Link>
                   ) : (
-                    <div className="group flex flex-col h-full p-8 border border-charcoal/10 cursor-default min-h-[210px]">
+                    <div className="flex flex-col h-full p-8 border border-charcoal/10 cursor-default min-h-[210px]">
                       {cardBody}
                     </div>
                   )}
@@ -195,7 +196,7 @@ export default function ServicesPage() {
               rel={waLink ? "noopener noreferrer" : undefined}
               className="group inline-flex items-center gap-3 px-10 py-5 bg-ochre text-cream font-sans font-medium text-sm tracking-widest uppercase hover:bg-charcoal transition-colors duration-300 rounded-sm"
             >
-              {tx(C.ctaBtn, lang)}
+              {tx(waLink ? C.ctaBtn : C.ctaBtnMail, lang)}
             </a>
           </RevealBlock>
         </div>
