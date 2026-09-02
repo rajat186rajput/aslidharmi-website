@@ -24,7 +24,7 @@ export default function HomePage() {
             transition={{ duration: 0.7, ease: EASE }}
             viewport={{ once: true }}
           >
-            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/70 mb-4">{tx(t.home.initiativesLabel, lang)}</p>
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-deep mb-4">{tx(t.home.initiativesLabel, lang)}</p>
             <h2 className="font-heading text-4xl md:text-5xl text-charcoal font-semibold mb-5 leading-tight">
               {tx(t.home.initiativesTitle, lang)}
             </h2>
@@ -90,7 +90,7 @@ export default function HomePage() {
           viewport={{ once: true, margin: "-40px" }}
           className="max-w-3xl mx-auto text-center"
         >
-          <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/70 mb-6">{tx(t.home.servicesBandEyebrow, lang)}</p>
+          <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-deep mb-6">{tx(t.home.servicesBandEyebrow, lang)}</p>
           <h2 className="font-heading text-3xl md:text-4xl text-charcoal font-semibold mb-5 leading-tight">
             {tx(t.home.servicesBandTitle, lang)}
           </h2>

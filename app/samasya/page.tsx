@@ -147,7 +147,7 @@ export default function SamasyaPage() {
           transition={{ duration: 0.9, ease: EASE }}
           className="max-w-4xl relative"
         >
-          <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/60 mb-6">{tx(C.eyebrow, lang)}</p>
+          <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-light mb-6">{tx(C.eyebrow, lang)}</p>
           <h1 className="font-heading text-5xl md:text-7xl text-cream font-semibold leading-[0.92] mb-6">
             {tx(C.h1a, lang)}<br />
             <em className="text-ochre">{tx(C.h1em, lang)}</em>

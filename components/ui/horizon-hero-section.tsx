@@ -277,30 +277,67 @@ export const Component = () => {
 
       {/* Nav handled globally by AnimatedNavFramer (components/ui/navigation-menu.tsx) — consistent across all pages */}
 
-      {/* Hero content */}
-      <div style={{ position: 'relative', zIndex: 10, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '0 24px' }}>
-        <p style={{ fontFamily: 'var(--font-hind)', fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#C8832A', marginBottom: '40px' }}>
+      {/* Hero content
+          P2-1 (consistency-fix-spec-2026-09-02): top-anchored via paddingTop instead of
+          justifyContent:'center', so the text block no longer re-centres into whatever the
+          WebGL mountain geometry happens to be doing at a given viewport height/aspect —
+          clamp() values tuned live at 390/768/1024/1440, see the fix report for the check. */}
+      <div style={{ position: 'relative', zIndex: 10, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center', padding: '0 24px', paddingTop: 'clamp(70px, 5vh, 170px)' }}>
+        {/* P1-3/P1-4: ochre-light (dark-bg-safe, 6.04:1 on charcoal) instead of solid brand
+            ochre (~1.8:1 on this photo) + a text-shadow scrim so it stays legible regardless
+            of where the sky gradient happens to be brightest at a given scroll/viewport. */}
+        <p style={{ fontFamily: 'var(--font-hind)', fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--color-ochre-light)', textShadow: '0 1px 12px rgba(0,0,0,0.55)', marginBottom: '40px' }}>
           {tx(t.hero.label, lang)}
         </p>
+        {/* P0-1: word-safe reveal — each WORD is the outer inline-block/nowrap unit (the
+            browser may only break a line between these), each CHARACTER inside is a plain
+            inline span (not inline-block) purely so GSAP's '.title-char' stagger can still
+            target every letter. A real space (not &nbsp;) sits between word spans. */}
         <h1 ref={titleRef} style={{ fontFamily: 'var(--font-playfair)', fontSize: 'clamp(52px, 9vw, 112px)', fontWeight: 600, lineHeight: 0.92, color: '#F5F0E8', marginBottom: '12px', overflow: 'hidden' }}>
-          {tx(t.hero.line1, lang).split('').map((c, i) => (
-            <span key={i} className="title-char" style={{ display: 'inline-block' }}>{c === ' ' ? ' ' : c}</span>
+          {tx(t.hero.line1, lang).split(' ').map((word, wi, arr) => (
+            <React.Fragment key={wi}>
+              <span style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
+                {word.split('').map((c, ci) => (
+                  <span key={ci} className="title-char" style={{ display: 'inline' }}>{c}</span>
+                ))}
+              </span>
+              {wi < arr.length - 1 ? ' ' : ''}
+            </React.Fragment>
           ))}
         </h1>
+        {/* Same word-safety treatment applied to line2 for consistency (same latent
+            mid-word-break risk as line1 if this copy is ever edited) — no animation is
+            wired to these spans, matching the pre-existing behaviour (line2 has never been
+            part of the GSAP stagger; that stays out of scope here, see P3-2). */}
         <h1 style={{ fontFamily: 'var(--font-playfair)', fontSize: 'clamp(52px, 9vw, 112px)', fontWeight: 600, lineHeight: 0.92, color: '#C8832A', fontStyle: 'italic', marginBottom: '48px' }}>
-          {tx(t.hero.line2, lang)}
+          {tx(t.hero.line2, lang).split(' ').map((word, wi, arr) => (
+            <React.Fragment key={wi}>
+              <span style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>{word}</span>
+              {wi < arr.length - 1 ? ' ' : ''}
+            </React.Fragment>
+          ))}
         </h1>
         <div ref={subtitleRef}>
           <p className="subtitle-line" style={{ fontFamily: 'var(--font-hind)', fontSize: '18px', color: 'rgba(245,240,232,0.52)', maxWidth: '480px', lineHeight: 1.7, marginBottom: '4px' }}>
             {tx(t.hero.sub, lang).split('.')[0]}.
           </p>
         </div>
+        {/* P1-1/P1-2: sitewide button system (px-10 py-5 ... rounded-sm, verbatim from
+            app/join/page.tsx etc.) replacing the hand-rolled inline-style buttons, and
+            ochre-fill primary first / outline secondary second — matches every other
+            CTA pair on the site instead of leading with the outline action. */}
         <div style={{ display: 'flex', gap: '12px', marginTop: '48px', flexWrap: 'wrap', justifyContent: 'center' }}>
-          <Link href="/join" style={{ padding: '14px 32px', background: 'rgba(245,240,232,0.1)', color: '#F5F0E8', border: '1px solid rgba(245,240,232,0.2)', fontFamily: 'var(--font-hind)', fontSize: '12px', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', borderRadius: '2px', backdropFilter: 'blur(8px)' }}>
-            {tx(t.hero.cta1, lang)} →
-          </Link>
-          <Link href="/hamari-soch" style={{ padding: '14px 32px', background: '#C8832A', color: '#F5F0E8', fontFamily: 'var(--font-hind)', fontSize: '12px', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', borderRadius: '2px' }}>
+          <Link
+            href="/hamari-soch"
+            className="inline-flex items-center gap-3 px-10 py-5 bg-ochre text-cream font-sans font-medium text-sm tracking-widest uppercase hover:bg-cream hover:text-charcoal transition-colors duration-300 rounded-sm"
+          >
             {tx(t.hero.cta2, lang)}
+          </Link>
+          <Link
+            href="/join"
+            className="inline-flex items-center gap-3 px-10 py-5 border border-cream/20 text-cream/60 font-sans font-medium text-sm tracking-widest uppercase hover:border-cream/50 hover:text-cream transition-all duration-300 rounded-sm"
+          >
+            {tx(t.hero.cta1, lang)} →
           </Link>
         </div>
       </div>

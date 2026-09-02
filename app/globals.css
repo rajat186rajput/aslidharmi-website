@@ -8,6 +8,9 @@
 @theme inline {
   --color-ochre: #C8832A;
   --color-ochre-light: #E09A40;
+  /* Text-safe ochre for eyebrows/labels on LIGHT backgrounds (consistency-fix-spec-2026-09-02 P1-3).
+     Brand --color-ochre itself is untouched — this only affects small-text usage. 5.38:1 on cream, passes WCAG AA. */
+  --color-ochre-deep: #87581C;
   --color-charcoal: #2C2A27;
   --color-cream: #F5F0E8;
   --color-sage: #6B7C5E;
@@ -171,6 +174,18 @@ html[data-lang="hi"] blockquote,
 html[data-lang="hi"] li,
 html[data-lang="hi"] figcaption {
   line-height: 1.9 !important;
+}
+
+/* ── Language-switcher Devanagari optical sizing (P2-5, consistency-fix-spec-2026-09-02) ──
+   हिं next to HG/EN at one shared class string reads optically smaller/cramped — Devanagari
+   conjuncts + the anusvara dot need +1-2px over Latin caps for equal apparent weight, and
+   Latin-tuned letter-spacing pulls a 2-character Devanagari cluster apart unnaturally.
+   Scoped to [data-devanagari] (the LangSelector "hi" button only) — intentionally NOT the
+   [data-lang="hi"]/[html[data-lang="hi"]] rules above, which are a different concept
+   (Hindi as the active reading language) and must not be touched by this. */
+[data-devanagari] {
+  font-size: 14px !important;
+  letter-spacing: 0 !important;
 }
 
 /* ── Site-wide reduced-motion guard ──

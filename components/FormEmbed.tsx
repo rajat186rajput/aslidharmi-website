@@ -64,7 +64,7 @@ export function FormEmbed({
           <div className="w-px h-12 bg-ochre/40 mx-auto mb-8" />
 
           {/* Eyebrow */}
-          <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre/60 mb-5">
+          <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-deep mb-5">
             Coming Soon
           </p>
 
