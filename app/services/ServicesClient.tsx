@@ -114,7 +114,6 @@ export default function ServicesClient() {
             <p className="font-sans text-lg text-charcoal/55 max-w-2xl leading-relaxed">
               {tx(C.heroSub, lang)}
             </p>
-            <div className="w-px h-16 bg-ochre/40 mt-12" />
           </motion.div>
         </div>
       </section>
