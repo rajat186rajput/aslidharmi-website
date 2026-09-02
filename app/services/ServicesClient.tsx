@@ -71,7 +71,7 @@ const C = {
 
   seeEventMgmt: { en: "See Event Management →", hinglish: "Event Management Dekho →", hi: "इवेंट मैनेजमेंट देखें →" },
 
-  ctaHeading: { en: "Let's talk on WhatsApp", hinglish: "WhatsApp Par Baat Karein", hi: "व्हाट्सऐप पर बात करें" },
+  ctaHeading: { en: "Let's Talk", hinglish: "Baat Karein", hi: "बात करें" },
   ctaSub: { en: "One conversation. One person. No forms.", hinglish: "Ek baatcheet. Ek insaan. Koi form nahi.", hi: "एक बातचीत। एक व्यक्ति। कोई फ़ॉर्म नहीं।" },
   ctaBtn: { en: "Message Us →", hinglish: "Message Karo →", hi: "संदेश भेजें →" },
   ctaBtnMail: { en: "Email Us →", hinglish: "Email Karo →", hi: "ईमेल भेजें →" },
