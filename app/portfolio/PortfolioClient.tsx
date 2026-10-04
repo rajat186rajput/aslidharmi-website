@@ -27,6 +27,12 @@ const C = {
     "फ़ोटोग्राफ़ी: Treewood Films, हमारे फ़ोटोग्राफ़ी पार्टनर"
   ),
   close: E("Close", "बंद करें"),
+  aboutLabel: E("About this moment", "इस पल के बारे में"),
+  inCollection: E("In this collection", "इस संग्रह में"),
+  photographs: E("photographs", "तस्वीरें"),
+  photographyBy: E("Photography", "फ़ोटोग्राफ़ी"),
+  browse: E("Browse", "देखें"),
+  browseHint: E("Arrow keys or swipe · Esc to close", "ऐरो कीज़ या स्वाइप · बंद करने के लिए Esc"),
   scrollHint: E(
     "Scroll to explore · Select any photograph to view it in full",
     "स्क्रॉल करें · पूरी तस्वीर देखने के लिए किसी पर भी क्लिक करें"
@@ -50,6 +56,13 @@ export default function PortfolioClient() {
         src: g.full,
         title: tx(g.caption.title, lang),
         description: tx(g.caption.description, lang),
+        summaryLabel: tx(C.aboutLabel, lang),
+        summary: tx(g.caption.summary, lang),
+        details: [
+          { label: tx(C.inCollection, lang), value: `${g.kindCount} ${tx(C.photographs, lang)}` },
+          { label: tx(C.photographyBy, lang), value: "Treewood Films" },
+          { label: tx(C.browse, lang), value: tx(C.browseHint, lang) },
+        ],
       })),
     [lang]
   );

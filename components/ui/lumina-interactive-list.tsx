@@ -20,6 +20,11 @@ export interface LuminaSlide {
   title: string;
   description: string;
   alt?: string;
+  /** Wide screens only: a short paragraph shown in the right-hand blank space. */
+  summary?: string;
+  /** Wide screens only: label/value rows under the summary. */
+  details?: { label: string; value: string }[];
+  summaryLabel?: string;
 }
 
 interface LuminaProps {
@@ -292,7 +297,7 @@ export function LuminaViewer({ slides, startIndex = 0, onClose, autoSlideMs = 50
     let cancelled = false;
     import("gsap").then(({ gsap }) => {
       if (cancelled || !titleRef.current) return;
-      animateTitle(gsap, Array.from(titleRef.current.children), descRef.current, index);
+      animateTitle(gsap, Array.from(titleRef.current.querySelectorAll("[data-ch]")), descRef.current, index);
     });
     // keep the active nav item in view
     const el = navRef.current?.children[index] as HTMLElement | undefined;
@@ -340,7 +345,29 @@ export function LuminaViewer({ slides, startIndex = 0, onClose, autoSlideMs = 50
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
-      <style>{`@keyframes lumina-fill { from { width: 0% } to { width: 100% } } @keyframes lumina-fade { from { opacity: 0 } to { opacity: 1 } }`}</style>
+      <style>{`
+        @keyframes lumina-fill { from { width: 0% } to { width: 100% } }
+        @keyframes lumina-fade { from { opacity: 0 } to { opacity: 1 } }
+        /* Default (phones, tablets, square-ish screens): caption over the bottom of the photo */
+        .lumina-caption { position: absolute; left: 0; right: 0; bottom: 7rem; padding: 0 1.5rem; text-align: center; pointer-events: none; }
+        .lumina-right { display: none; }
+        @media (min-width: 640px) { .lumina-caption { bottom: 8rem; } }
+        /* Wide screens: the 4:5 photo fills the height and leaves a band either side
+           of width (100vw - 80vh) / 2. Title goes in the left band, summary in the right. */
+        @media (min-width: 1024px) and (min-aspect-ratio: 7/5) {
+          .lumina-caption, .lumina-right {
+            top: 0; bottom: 6rem; width: calc((100vw - 80vh) / 2);
+            display: flex; flex-direction: column; justify-content: center; padding: 0 3rem;
+          }
+          .lumina-caption { left: 0; right: auto; text-align: left; }
+          .lumina-caption .lumina-desc { margin-left: 0; }
+          .lumina-right { position: absolute; right: 0; }
+          .lumina-gradient { height: 9rem; }
+          .lumina-prev, .lumina-next { top: auto; bottom: 7rem; transform: none; }
+          .lumina-prev { left: 3rem; }
+          .lumina-next { right: 3rem; }
+        }
+      `}</style>
 
       {/* Image layer */}
       <canvas
@@ -358,7 +385,7 @@ export function LuminaViewer({ slides, startIndex = 0, onClose, autoSlideMs = 50
       )}
 
       {/* Bottom gradient so text stays readable over light photos */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
+      <div className="lumina-gradient pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
 
       {/* Counter */}
       <div className="absolute top-5 left-5 font-mono text-xs tracking-widest text-white/70 sm:top-8 sm:left-8">
@@ -380,7 +407,7 @@ export function LuminaViewer({ slides, startIndex = 0, onClose, autoSlideMs = 50
         type="button"
         aria-label="Previous"
         onClick={() => goTo(index - 1)}
-        className="absolute top-1/2 left-4 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/30 text-lg backdrop-blur transition-colors hover:bg-white hover:text-black md:flex"
+        className="lumina-prev absolute top-1/2 left-4 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/30 text-lg backdrop-blur transition-colors hover:bg-white hover:text-black md:flex"
       >
         ←
       </button>
@@ -388,28 +415,59 @@ export function LuminaViewer({ slides, startIndex = 0, onClose, autoSlideMs = 50
         type="button"
         aria-label="Next"
         onClick={() => goTo(index + 1)}
-        className="absolute top-1/2 right-4 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/30 text-lg backdrop-blur transition-colors hover:bg-white hover:text-black md:flex"
+        className="lumina-next absolute top-1/2 right-4 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/30 text-lg backdrop-blur transition-colors hover:bg-white hover:text-black md:flex"
       >
         →
       </button>
 
-      {/* Title + description */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-28 px-6 text-center sm:bottom-32">
+      {/* Title + description: bottom-centre by default, left band on wide screens */}
+      <div className="lumina-caption">
         <h2
           ref={titleRef}
           key={`t-${index}`}
           className="font-heading text-4xl font-semibold leading-tight [perspective:600px] sm:text-6xl"
         >
-          {Array.from(slide.title).map((ch, i) => (
-            <span key={i} className="inline-block opacity-0">
-              {ch === " " ? " " : ch}
-            </span>
+          {slide.title.split(" ").map((word, w, words) => (
+            <React.Fragment key={w}>
+              <span className="inline-block whitespace-nowrap">
+                {Array.from(word).map((ch, i) => (
+                  <span key={i} data-ch className="inline-block opacity-0">
+                    {ch}
+                  </span>
+                ))}
+              </span>
+              {w < words.length - 1 && " "}
+            </React.Fragment>
           ))}
         </h2>
-        <p ref={descRef} key={`d-${index}`} className="mx-auto mt-3 max-w-xl text-sm text-white/75 opacity-0 sm:text-base">
+        <p
+          ref={descRef}
+          key={`d-${index}`}
+          className="lumina-desc mx-auto mt-3 max-w-xl text-sm text-white/75 opacity-0 sm:text-base"
+        >
           {slide.description}
         </p>
       </div>
+
+      {/* Summary: right band on wide screens only */}
+      {(slide.summary || (slide.details && slide.details.length > 0)) && (
+        <aside key={`s-${index}`} className="lumina-right pointer-events-none animate-[lumina-fade_0.8s_ease]">
+          {slide.summaryLabel && (
+            <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.2em] text-ochre">{slide.summaryLabel}</p>
+          )}
+          {slide.summary && <p className="text-[15px] leading-relaxed text-white/80">{slide.summary}</p>}
+          {slide.details && slide.details.length > 0 && (
+            <dl className="mt-8 space-y-3 border-t border-white/15 pt-6 text-sm">
+              {slide.details.map((d) => (
+                <div key={d.label} className="flex flex-col gap-0.5">
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/45">{d.label}</dt>
+                  <dd className="text-white/85">{d.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+        </aside>
+      )}
 
       {/* Slide nav with autoplay progress */}
       <nav
