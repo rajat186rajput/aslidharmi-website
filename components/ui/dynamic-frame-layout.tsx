@@ -2,7 +2,7 @@
 
 // Source: https://21st.dev/@oeneco/components/dynamic-frame-layout (public 21st.dev registry, author: oeneco)
 // Local changes (2026-10-04, /services black-tile grid):
-//  - tiles are static (no link, no tab stop): black at rest, name on the left, services as a bulleted list on the right
+//  - tiles are static (no link, no tab stop): black at rest, name with the services as a bulleted list below it
 //  - desktop (min-width 768px AND pointer: fine): 3x3 fullscreen grid, hover expands the tile and its video
 //    fades in over black (one at a time); leaving pauses, resets to 0 and fades back to black
 //  - touch / narrow screens: a plain stack of black tiles (name + bullets), no video, no expansion
@@ -34,15 +34,22 @@ function useMedia(query: string) {
   )
 }
 
-function TileText({ title, services }: { title: string; services: readonly string[] }) {
+function TileText({ title, services, shrunk, topRow }: { title: string; services: readonly string[]; shrunk: boolean; topRow: boolean }) {
+  // Vertical stack: name, then the bulleted list below it, left-aligned. When another tile is expanded this tile
+  // shrinks, so type tightens (shrunk state only) to keep the 5-bullet Photos & Film list inside the tile.
+  // Vertically centred in the tile; on desktop a shrunk top-row tile gets extra top padding to clear the floating nav.
   return (
-    <div className="relative z-10 flex h-full w-full items-center gap-3 p-3 sm:p-4 xl:gap-5 xl:p-6 text-cream">
-      <h2 className="font-heading font-semibold leading-tight text-lg xl:text-2xl 2xl:text-3xl shrink-0 max-w-[46%] break-words">
+    <div
+      className={`relative z-10 flex h-full w-full flex-col items-start justify-center text-cream ${shrunk ? "p-3 xl:p-4" : "p-3 sm:p-4 xl:p-6"} ${shrunk && topRow ? "[@media(min-width:768px)_and_(pointer:fine)]:pt-16" : ""}`}
+    >
+      <h2
+        className={`font-heading font-semibold leading-tight break-words ${shrunk ? "text-base xl:text-lg" : "text-lg xl:text-2xl 2xl:text-3xl"} mb-1.5`}
+      >
         {title}
       </h2>
       <ul
         data-frame-list
-        className="min-w-0 flex-1 list-disc space-y-0.5 pl-4 font-sans text-xs xl:text-sm 2xl:text-base leading-snug marker:text-ochre"
+        className={`w-full min-w-0 list-disc pl-4 font-sans marker:text-ochre ${shrunk ? "text-xs leading-tight space-y-0" : "text-xs xl:text-sm 2xl:text-base leading-snug space-y-0.5"}`}
       >
         {services.map((s) => (
           <li key={s} className="break-words">
@@ -140,7 +147,7 @@ export function DynamicFrameLayout({ frames, className, hoverSize = 6, gapSize =
             {interactive && armed.has(frame.id) && <TileVideo src={frame.video} active={isActive} />}
             {/* scrim keeps the text legible over the video; invisible against the black rest state */}
             <span className="absolute inset-0 bg-black/55" aria-hidden="true" />
-            <TileText title={frame.title} services={frame.services} />
+            <TileText title={frame.title} services={frame.services} shrunk={active !== null && !isActive} topRow={row === 0} />
           </div>
         )
       })}
