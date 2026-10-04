@@ -1,11 +1,10 @@
 "use client";
 
 import { DynamicFrameLayout, type Frame } from "@/components/ui/dynamic-frame-layout";
-import { whatsappHref, mailtoFallback } from "@/lib/whatsapp";
 
 // /services = ONLY the 3x3 category video-tile grid, fullscreen (Rajat 2026-10-04 16:59 IST).
 // Spec: vault "Website Service Categories - 2026-10-04" (tile titles/taglines verbatim, row-major order).
-// English-only site. A tile is an enquiry link: WhatsApp if the number is set, else the email fallback.
+// English-only site. Tiles are static (not links) per Rajat 2026-10-04 17:17 IST.
 // Hard rules: no prices, founder name, geography or proof.
 const TILE_DIR = "/services/tiles";
 const CATEGORIES = [
@@ -21,8 +20,6 @@ const CATEGORIES = [
 ] as const;
 
 const FRAMES: Frame[] = CATEGORIES.map((c, i) => {
-  const msg = `Hi! I'd like to know about ${c.title}.`;
-  const wa = whatsappHref(msg);
   return {
     id: i + 1,
     slug: c.slug,
@@ -30,8 +27,6 @@ const FRAMES: Frame[] = CATEGORIES.map((c, i) => {
     tagline: c.tagline,
     poster: `${TILE_DIR}/${c.slug}.jpg`,
     video: `${TILE_DIR}/${c.slug}.mp4`,
-    href: wa ?? mailtoFallback(msg),
-    newTab: !!wa,
     priority: i < 3,
   };
 });

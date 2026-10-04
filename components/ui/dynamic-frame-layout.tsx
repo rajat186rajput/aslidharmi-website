@@ -2,8 +2,8 @@
 
 // Source: https://21st.dev/@oeneco/components/dynamic-frame-layout (public 21st.dev registry, author: oeneco)
 // Local changes (2026-10-04, /services fullscreen category grid):
-//  - frames are interactive tiles (real <a href>) with title + tagline over a scrim
-//  - hover-expand also fires on keyboard focus (and stays while a tile keeps focus)
+//  - frames are static, non-interactive tiles (no link, no tab stop) with title + tagline over a scrim
+//  - hover-expand only (no keyboard trigger: tiles are not focusable)
 //  - md and up only: expansion + video (plays on hover/focus, one at a time). Never under
 //    prefers-reduced-motion (poster only, no expansion, no transition).
 //  - below md: the same 3x3 grid as a still poster grid (no video, no expansion, title only)
@@ -21,10 +21,6 @@ export interface Frame {
   poster: string
   /** Silent loop; the page must not depend on it existing at build time. */
   video: string
-  /** Real link for the tile (enquiry). */
-  href: string
-  /** Open in a new tab (true for https links; false for mailto). */
-  newTab?: boolean
   /** Above-the-fold tiles get a high fetch priority (never lazy: the whole grid is visible on first paint). */
   priority?: boolean
 }
@@ -110,7 +106,6 @@ function TileMedia({ frame, playing, canPlay }: { frame: Frame; playing: boolean
           loop
           preload="none"
           aria-hidden="true"
-          tabIndex={-1}
         />
       )}
       <span className={`absolute inset-0 ${SCRIM}`} aria-hidden="true" />
@@ -129,21 +124,14 @@ export function DynamicFrameLayout({ frames, className, hoverSize = 6, gapSize =
   const reduced = useMedia("(prefers-reduced-motion: reduce)")
   const wide = useMedia("(min-width: 768px)")
   const interactive = wide && !reduced // expansion + video only here
-  // Mouse hover wins; a focused tile keeps its expansion when the mouse leaves it.
   const [hover, setHover] = useState<{ row: number; col: number } | null>(null)
-  const [focus, setFocus] = useState<{ row: number; col: number } | null>(null)
-  const active = interactive ? (hover ?? focus) : null
+  const active = interactive ? hover : null
 
   const sizes = (index: number | undefined) => {
     if (index === undefined) return "4fr 4fr 4fr"
     const rest = (12 - hoverSize) / 2
     return [0, 1, 2].map((i) => (i === index ? `${hoverSize}fr` : `${rest}fr`)).join(" ")
   }
-
-  // Ring is an overlay ABOVE the media (z-20), so it is visible over poster and video.
-  const ring =
-    "pointer-events-none absolute inset-0 z-20 opacity-0 transition-opacity group-focus-visible:opacity-100 " +
-    "shadow-[inset_0_0_0_4px_var(--color-cream),inset_0_0_0_8px_var(--color-ochre-deep),inset_0_0_0_10px_var(--color-cream)]"
 
   return (
     <div
@@ -160,23 +148,16 @@ export function DynamicFrameLayout({ frames, className, hoverSize = 6, gapSize =
         const row = Math.floor(i / 3)
         const col = i % 3
         return (
-          <a
+          <div
             key={frame.id}
-            href={frame.href}
-            target={frame.newTab ? "_blank" : undefined}
-            rel={frame.newTab ? "noopener noreferrer" : undefined}
-            aria-label={`${frame.title}. ${frame.tagline} Enquire.`}
             data-frame-tile={frame.slug}
-            className="group relative block min-h-0 min-w-0 overflow-hidden outline-none"
+            className="relative block min-h-0 min-w-0 overflow-hidden"
             onMouseEnter={() => setHover({ row, col })}
             onMouseLeave={() => setHover(null)}
-            onFocus={() => setFocus({ row, col })}
-            onBlur={() => setFocus(null)}
           >
             <TileMedia frame={frame} playing={active?.row === row && active?.col === col} canPlay={interactive} />
             <TileText title={frame.title} tagline={frame.tagline} />
-            <span className={ring} aria-hidden="true" />
-          </a>
+          </div>
         )
       })}
     </div>
