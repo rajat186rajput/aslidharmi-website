@@ -9,7 +9,6 @@
 //  - decorative frame props (corner/edge*/border*) and showFrames removed (unused)
 
 import { useState, useEffect, useRef, useSyncExternalStore } from "react"
-import { motion } from "framer-motion"
 
 export interface Frame {
   id: number | string
@@ -28,7 +27,7 @@ function subscribeReduced(cb: () => void) {
   mq.addEventListener("change", cb)
   return () => mq.removeEventListener("change", cb)
 }
-function usePrefersReducedMotion() {
+export function usePrefersReducedMotion() {
   return useSyncExternalStore(
     subscribeReduced,
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -36,13 +35,13 @@ function usePrefersReducedMotion() {
   )
 }
 
-function scrollToSlug(slug: string, reduced: boolean) {
+export function scrollToSlug(slug: string, reduced: boolean) {
   const el = document.getElementById(slug)
   if (!el) return
+  // Move keyboard/screen-reader focus first (no scroll), then scroll: one motion, no timer.
+  el.focus({ preventScroll: true })
   el.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" })
   history.replaceState(null, "", `#${slug}`)
-  // Move keyboard/screen-reader focus to the section without a second scroll.
-  window.setTimeout(() => el.focus({ preventScroll: true }), reduced ? 0 : 500)
 }
 
 const SCRIM = "bg-gradient-to-t from-charcoal/90 via-charcoal/35 to-transparent"
@@ -83,8 +82,8 @@ function FrameComponent({
   }, [isActive, reduced])
 
   return (
-    <div className="absolute inset-0 overflow-hidden bg-charcoal" style={{ transition: "all 0.3s ease-in-out" }}>
-      {/* poster is also the video's poster attribute; the extra <img> keeps a still visible if the video 404s */}
+    <div className="absolute inset-0 overflow-hidden bg-charcoal">
+      {/* the <img> is the still; the video layers over it only while playing */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={frame.poster} alt="" loading="lazy" decoding="async" onError={(e) => { e.currentTarget.style.visibility = "hidden" }} className="absolute inset-0 h-full w-full object-cover" />
       {!reduced && (
@@ -92,7 +91,6 @@ function FrameComponent({
           ref={videoRef}
           className="absolute inset-0 h-full w-full object-cover"
           src={frame.video}
-          poster={frame.poster}
           muted
           playsInline
           loop
@@ -114,7 +112,10 @@ interface DynamicFrameLayoutProps {
 }
 
 export function DynamicFrameLayout({ frames, className, hoverSize = 6, gapSize = 4 }: DynamicFrameLayoutProps) {
-  const [hovered, setHovered] = useState<{ row: number; col: number } | null>(null)
+  // Mouse hover wins; a focused tile keeps its expansion when the mouse leaves it.
+  const [hover, setHover] = useState<{ row: number; col: number } | null>(null)
+  const [focus, setFocus] = useState<{ row: number; col: number } | null>(null)
+  const hovered = hover ?? focus
   const reduced = usePrefersReducedMotion()
 
   const sizes = (index: number | undefined) => {
@@ -149,20 +150,20 @@ export function DynamicFrameLayout({ frames, className, hoverSize = 6, gapSize =
           const col = i % 3
           const active = hovered?.row === row && hovered?.col === col
           return (
-            <motion.a
+            <a
               key={frame.id}
               href={`#${frame.slug}`}
               data-frame-tile={frame.slug}
               className={`relative block overflow-hidden ${focusRing}`}
               onClick={(e) => onTileClick(e, frame.slug)}
-              onMouseEnter={() => setHovered({ row, col })}
-              onMouseLeave={() => setHovered(null)}
-              onFocus={() => setHovered({ row, col })}
-              onBlur={() => setHovered(null)}
+              onMouseEnter={() => setHover({ row, col })}
+              onMouseLeave={() => setHover(null)}
+              onFocus={() => setFocus({ row, col })}
+              onBlur={() => setFocus(null)}
             >
               <FrameComponent frame={frame} isActive={active} reduced={reduced} />
               <TileText title={frame.title} tagline={frame.tagline} />
-            </motion.a>
+            </a>
           )
         })}
       </div>

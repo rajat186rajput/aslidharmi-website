@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { useLang, tx } from "@/lib/i18n";
-import { DynamicFrameLayout, type Frame } from "@/components/ui/dynamic-frame-layout";
+import { DynamicFrameLayout, scrollToSlug, type Frame } from "@/components/ui/dynamic-frame-layout";
 import { whatsappHref, mailtoFallback, WHATSAPP_MAILTO_FALLBACK } from "@/lib/whatsapp";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -46,19 +46,12 @@ const C = {
 const en3 = (s: string) => ({ en: s, hinglish: s, hi: s }); // English reused for hinglish/hi (site is English-only)
 
 const SERVICE_CARDS = {
-  label: { en: "What we do", hinglish: "What we do", hi: "What we do" }, // en only (English-only site)
-  title: { en: "Everything, Piece by Piece", hinglish: "Everything, Piece by Piece", hi: "Everything, Piece by Piece" },
-  sub: {
-    en: "Pick what you need. Ask for just that.",
-    hinglish: "Pick what you need. Ask for just that.",
-    hi: "Pick what you need. Ask for just that.",
-  },
+  label: en3("What we do"),
+  title: en3("Everything, Piece by Piece"),
+  sub: en3("Pick what you need. Ask for just that."),
   tag: { en: "On its own, or inside a bundle", hinglish: "Akele bhi, bundle mein bhi", hi: "अकेले भी, बंडल में भी" },
   btn: { en: "Ask on WhatsApp →", hinglish: "WhatsApp par poochho →", hi: "WhatsApp पर पूछें →" },
-  groups: [
-    {
-      num: "01",
-      cards: [
+  cards: [
         {
           id: 1,
           name: { en: "Photo + Video + Reels", hinglish: "Photo + Video + Reels", hi: "फ़ोटो + वीडियो + रील्स" },
@@ -99,11 +92,6 @@ const SERVICE_CARDS = {
           },
           wa: "Hi! I'd like to know about Transport.",
         },
-      ],
-    },
-    {
-      num: "02",
-      cards: [
         {
           id: 4,
           name: { en: "Webpage / Social Media", hinglish: "Webpage / Social Media", hi: "वेबपेज / सोशल मीडिया" },
@@ -154,11 +142,6 @@ const SERVICE_CARDS = {
           },
           wa: "Hi! I'd like to know about Video Editing.",
         },
-      ],
-    },
-    {
-      num: "03",
-      cards: [
         {
           id: 9,
           name: { en: "Craft & Gifting", hinglish: "Craft & Gifting", hi: "क्राफ़्ट और गिफ़्टिंग" },
@@ -199,11 +182,6 @@ const SERVICE_CARDS = {
           },
           wa: "Hi! I'd like to know about Digital Cards.",
         },
-      ],
-    },
-    {
-      num: "04",
-      cards: [
         {
           id: 13,
           name: { en: "Hill Trips & Stays", hinglish: "Hill Trips & Stays", hi: "पहाड़ की ट्रिप और ठहरना" },
@@ -214,8 +192,6 @@ const SERVICE_CARDS = {
           },
           wa: "Hi! I'd like to know about a Hill Trip.",
         },
-      ],
-    },
   ],
 } as const;
 
@@ -235,7 +211,7 @@ const DECORATION_CARD: ServiceCard = {
 };
 
 const CARD_BY_ID: Record<number, ServiceCard> = Object.fromEntries(
-  [...SERVICE_CARDS.groups.flatMap((g) => g.cards as readonly ServiceCard[]), DECORATION_CARD].map((c) => [c.id, c]),
+  [...(SERVICE_CARDS.cards as readonly ServiceCard[]), DECORATION_CARD].map((c) => [c.id, c]),
 );
 
 // ─── 9 categories (row-major 3x3 order = spec order; same order on mobile) ──
@@ -332,9 +308,7 @@ export default function ServicesClient() {
               href={`#${EVENT_BAND.id}`}
               onClick={(e) => {
                 e.preventDefault();
-                const el = document.getElementById(EVENT_BAND.id);
-                el?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-                if (el) history.replaceState(null, "", `#${EVENT_BAND.id}`);
+                scrollToSlug(EVENT_BAND.id, !!reduce);
               }}
               className="font-sans text-sm text-ochre-deep underline underline-offset-4 hover:text-charcoal transition-colors"
             >
