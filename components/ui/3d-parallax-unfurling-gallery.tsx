@@ -19,10 +19,16 @@ export interface GalleryImage {
 
 interface ImageCardProps {
   image: GalleryImage;
+  onClick?: () => void;
 }
 
-const ImageCard = ({ image }: ImageCardProps) => (
+const ImageCard = ({ image, onClick }: ImageCardProps) => (
   <div
+    role={onClick ? "button" : undefined}
+    tabIndex={onClick ? 0 : undefined}
+    aria-label={onClick ? `Open: ${image.alt}` : undefined}
+    onClick={onClick}
+    onKeyDown={onClick ? (e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), onClick()) : undefined}
     className="relative h-[200px] w-full flex-shrink-0 cursor-pointer overflow-hidden rounded-xl bg-[#111] transition-transform duration-300 will-change-transform hover:scale-[1.02] sm:h-[300px] md:h-[400px]"
     style={{ backfaceVisibility: "hidden" }}
   >
@@ -40,15 +46,18 @@ interface ParallaxGalleryProps {
   images: GalleryImage[];
   /** Total scroll length of the section, in vh. Default 400. */
   heightVh?: number;
+  /** Called with the index into `images` when a card is clicked. */
+  onSelect?: (index: number) => void;
 }
 
-export default function ParallaxUnfurlingGallery({ images, heightVh = 400 }: ParallaxGalleryProps) {
+export default function ParallaxUnfurlingGallery({ images, heightVh = 400, onSelect }: ParallaxGalleryProps) {
   const containerRef = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
 
   // Split into 4 columns, doubled so each column is long enough to parallax.
   const cols = useMemo(() => {
-    const split = [0, 1, 2, 3].map((c) => images.filter((_, i) => i % 4 === c));
+    const indexed = images.map((img, idx) => ({ img, idx }));
+    const split = [0, 1, 2, 3].map((c) => indexed.filter((_, i) => i % 4 === c));
     return split.map((col) => [...col, ...col]);
   }, [images]);
 
@@ -83,7 +92,7 @@ export default function ParallaxUnfurlingGallery({ images, heightVh = 400 }: Par
       <section className="bg-[#050505] px-4 py-16 sm:px-8">
         <div className="mx-auto grid max-w-6xl grid-cols-2 gap-4 md:grid-cols-4">
           {images.map((img, i) => (
-            <ImageCard key={`static-${i}`} image={img} />
+            <ImageCard key={`static-${i}`} image={img} onClick={onSelect && (() => onSelect(i))} />
           ))}
         </div>
       </section>
@@ -126,8 +135,8 @@ export default function ParallaxUnfurlingGallery({ images, heightVh = 400 }: Par
                   style={{ y: colY[c] }}
                   className="pointer-events-auto flex w-[22vw] min-w-[200px] flex-col gap-4 md:gap-6"
                 >
-                  {col.map((img, i) => (
-                    <ImageCard key={`col${c}-${i}`} image={img} />
+                  {col.map(({ img, idx }, i) => (
+                    <ImageCard key={`col${c}-${i}`} image={img} onClick={onSelect && (() => onSelect(idx))} />
                   ))}
                 </motion.div>
               ))}

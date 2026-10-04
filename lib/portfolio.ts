@@ -10,9 +10,81 @@ import type { GalleryImage } from "@/components/ui/3d-parallax-unfurling-gallery
 
 type Tri = { en: string; hinglish: string; hi: string };
 
-export const GALLERY_IMAGES: GalleryImage[] = Array.from({ length: 24 }, (_, i) => ({
+// Caption per gallery photo, by what the photo shows (no names/places — none supplied).
+const CAPTIONS: Record<string, { title: Tri; description: Tri }> = {
+  dulhan: {
+    title: { en: "The Bride", hinglish: "Dulhan", hi: "दुल्हन" },
+    description: {
+      en: "A quiet portrait before the day takes over.",
+      hinglish: "Din ki bhaag-daud se pehle, ek sukoon bhari tasveer.",
+      hi: "दिन की भाग-दौड़ से पहले, एक सुकून भरी तस्वीर।",
+    },
+  },
+  mehendi: {
+    title: { en: "Mehendi", hinglish: "Mehendi", hi: "मेहंदी" },
+    description: {
+      en: "Henna, rings and the small details.",
+      hinglish: "Mehendi, angoothi aur chhoti-chhoti baatein.",
+      hi: "मेहंदी, अंगूठी और छोटी-छोटी बातें।",
+    },
+  },
+  haldi: {
+    title: { en: "Haldi", hinglish: "Haldi", hi: "हल्दी" },
+    description: {
+      en: "Colour, marigolds and a lot of laughter.",
+      hinglish: "Rang, genda aur dher saari hansi.",
+      hi: "रंग, गेंदा और ढेर सारी हँसी।",
+    },
+  },
+  sagaai: {
+    title: { en: "Engagement", hinglish: "Sagaai", hi: "सगाई" },
+    description: {
+      en: "The rings, the nerves, the first portraits together.",
+      hinglish: "Angoothiyan, thodi ghabrahat, saath ki pehli tasveerein.",
+      hi: "अंगूठियाँ, थोड़ी घबराहट, साथ की पहली तस्वीरें।",
+    },
+  },
+  couple: {
+    title: { en: "Together", hinglish: "Saath", hi: "साथ" },
+    description: {
+      en: "Two people, not a crowd.",
+      hinglish: "Do log, bheed nahi.",
+      hi: "दो लोग, भीड़ नहीं।",
+    },
+  },
+  jaimala: {
+    title: { en: "Jaimala", hinglish: "Jaimala", hi: "जयमाला" },
+    description: {
+      en: "Garlands exchanged, petals in the air.",
+      hinglish: "Mala badli, hawa mein phool.",
+      hi: "माला बदली, हवा में फूल।",
+    },
+  },
+  shaadi: {
+    title: { en: "The Wedding", hinglish: "Shaadi", hi: "शादी" },
+    description: {
+      en: "The day itself, as it happened.",
+      hinglish: "Shaadi ka din, jaisa hua.",
+      hi: "शादी का दिन, जैसा हुआ।",
+    },
+  },
+};
+
+// g01..g24 in order (contact-sheet picks 2,11,14,18,43,51,54,60,62,63,64,70,71,73,76,83,84,90,91,92,96,34,1,10)
+const GALLERY_KINDS = [
+  "dulhan", "dulhan", "mehendi", "dulhan", "dulhan", "couple", "haldi", "haldi",
+  "dulhan", "sagaai", "sagaai", "sagaai", "sagaai", "couple", "sagaai", "dulhan",
+  "couple", "jaimala", "shaadi", "shaadi", "dulhan", "shaadi", "dulhan", "shaadi",
+] as const;
+
+export const GALLERY: { src: string; caption: (typeof CAPTIONS)[string] }[] = GALLERY_KINDS.map((k, i) => ({
   src: `/portfolio/g${String(i + 1).padStart(2, "0")}.webp`,
-  alt: "Wedding photograph by Treewood Films",
+  caption: CAPTIONS[k],
+}));
+
+export const GALLERY_IMAGES: GalleryImage[] = GALLERY.map((g) => ({
+  src: g.src,
+  alt: `${g.caption.title.en} — wedding photograph by Treewood Films`,
 }));
 
 export interface PortfolioProject {

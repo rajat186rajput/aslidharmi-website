@@ -1,10 +1,12 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useLang, tx } from "@/lib/i18n";
 import { whatsappHref, mailtoFallback } from "@/lib/whatsapp";
 import ParallaxUnfurlingGallery from "@/components/ui/3d-parallax-unfurling-gallery";
-import { GALLERY_IMAGES, PROJECTS } from "@/lib/portfolio";
+import { LuminaViewer } from "@/components/ui/lumina-interactive-list";
+import { GALLERY, GALLERY_IMAGES, PROJECTS } from "@/lib/portfolio";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -23,6 +25,7 @@ const C = {
     hinglish: "Photography: Treewood Films — hamare photographer partner",
     hi: "फ़ोटोग्राफ़ी: Treewood Films — हमारे फ़ोटोग्राफ़र पार्टनर",
   },
+  close: { en: "Close", hinglish: "Band karein", hi: "बंद करें" },
   scrollHint: { en: "Scroll", hinglish: "Scroll karein", hi: "स्क्रॉल करें" },
   projectsLabel: { en: "Projects", hinglish: "Projects", hi: "प्रोजेक्ट्स" },
   projectsTitle: { en: "Job by Job", hinglish: "Ek-Ek Kaam", hi: "एक-एक काम" },
@@ -35,6 +38,16 @@ export default function PortfolioClient() {
   const reduce = useReducedMotion();
   const ctaMsg = "Hi! I saw your work page and would like to talk.";
   const ctaHref = whatsappHref(ctaMsg) ?? mailtoFallback("Portfolio enquiry");
+  const [viewerAt, setViewerAt] = useState<number | null>(null);
+  const slides = useMemo(
+    () =>
+      GALLERY.map((g) => ({
+        src: g.src,
+        title: tx(g.caption.title, lang),
+        description: tx(g.caption.description, lang),
+      })),
+    [lang]
+  );
 
   const fadeUp = (delay = 0) =>
     reduce
@@ -71,7 +84,15 @@ export default function PortfolioClient() {
       </section>
 
       {/* 2 — 3D parallax gallery */}
-      <ParallaxUnfurlingGallery images={GALLERY_IMAGES} heightVh={400} />
+      <ParallaxUnfurlingGallery images={GALLERY_IMAGES} heightVh={400} onSelect={setViewerAt} />
+      {viewerAt !== null && (
+        <LuminaViewer
+          slides={slides}
+          startIndex={viewerAt}
+          onClose={() => setViewerAt(null)}
+          closeLabel={tx(C.close, lang)}
+        />
+      )}
 
       {/* 3 — Project cards */}
       <section className="mx-auto max-w-6xl px-6 py-24">
