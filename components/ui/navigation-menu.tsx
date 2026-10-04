@@ -13,11 +13,10 @@ import { MULTILINGUAL_ENABLED } from "@/lib/multilingual";
 // Asli Dharmi routes (brand wordmark on the left links to Home, Join pill on the right).
 // IA restructure 2026-06-01: 4 middle links (was 5). "Reels & Essays"/Content removed from nav.
 // Services & Bundles 2026-09-02: "services" inserted as item 2 (5 middle links again).
-// Portfolio 2026-10-04: "work" (/portfolio) inserted after services (6 middle links).
+// Portfolio 2026-10-04: briefly live at /portfolio, then moved to its own password-protected site (aslidharmi-work).
 const navItems = [
   { key: "soch", href: "/hamari-soch" },
   { key: "services", href: "/services" },
-  { key: "work", href: "/portfolio" },
   { key: "products", href: "/products" },
   { key: "skills", href: "/skills" },
   { key: "help", href: "/help-us" },

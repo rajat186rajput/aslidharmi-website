@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
       { source: "/kaam", destination: "/hamari-soch#kaam", permanent: true },
       // Finances/Paisa renamed to "Help Us" (dashboard kept intact + donate band on top).
       { source: "/paisa", destination: "/help-us", permanent: true },
+      // 2026-10-04: the portfolio moved off this site to a separate password-protected page.
+      { source: "/portfolio", destination: "/", permanent: false },
     ];
   },
 };
