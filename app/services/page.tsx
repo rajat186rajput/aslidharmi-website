@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { MULTILINGUAL_ENABLED } from "@/lib/multilingual";
 import ServicesClient from "./ServicesClient";
 
 // Page-specific SEO metadata (2026-09-02 QA fix). Split into a server-component
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
       "Event management, technical services, and handmade craft — one team, one conversation, start to finish.",
     url: "https://aslidharmi.in/services",
     siteName: "Asli Dharmi",
-    locale: "hi_IN",
+    locale: MULTILINGUAL_ENABLED ? "hi_IN" : "en_IN",
     type: "website",
   },
 };

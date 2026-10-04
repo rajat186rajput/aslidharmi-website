@@ -1,6 +1,11 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { MULTILINGUAL_ENABLED } from "@/lib/multilingual";
+
+// Rajat 2026-10-04: English-only until he says otherwise. Flip to true to restore en/hinglish/hi.
+// (The flag itself is defined in lib/multilingual.ts so server components can read it too.)
+export { MULTILINGUAL_ENABLED };
 
 export type Lang = "en" | "hi" | "hinglish";
 
@@ -193,12 +198,16 @@ interface LangCtx {
   setLang: (l: Lang) => void;
 }
 
-const LangContext = createContext<LangCtx>({ lang: "hinglish", setLang: () => {} });
+const DEFAULT_LANG: Lang = MULTILINGUAL_ENABLED ? "hinglish" : "en";
+
+const LangContext = createContext<LangCtx>({ lang: DEFAULT_LANG, setLang: () => {} });
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("hinglish");
+  const [lang, setLangState] = useState<Lang>(DEFAULT_LANG);
 
   useEffect(() => {
+    // English-only mode: ignore (but do not erase) any saved choice.
+    if (!MULTILINGUAL_ENABLED) return;
     const saved = localStorage.getItem("ad-lang") as Lang | null;
     if (saved && ["en", "hi", "hinglish"].includes(saved)) setLangState(saved);
   }, []);
@@ -209,6 +218,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, [lang]);
 
   const setLang = (l: Lang) => {
+    if (!MULTILINGUAL_ENABLED) return;
     setLangState(l);
     localStorage.setItem("ad-lang", l);
   };

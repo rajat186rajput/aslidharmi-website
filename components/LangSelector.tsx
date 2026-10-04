@@ -2,11 +2,15 @@
 
 import { useLang, LANG_LABELS, Lang } from "@/lib/i18n";
 import { motion } from "framer-motion";
+import { MULTILINGUAL_ENABLED } from "@/lib/multilingual";
 
 const LANGS: Lang[] = ["hinglish", "hi", "en"];
 
 export function LangSelector({ dark = false }: { dark?: boolean }) {
   const { lang, setLang } = useLang();
+
+  // English-only mode (Rajat 2026-10-04): switcher hidden everywhere. Call sites untouched.
+  if (!MULTILINGUAL_ENABLED) return null;
 
   return (
     <div className="flex items-center gap-0.5 rounded-sm overflow-hidden border border-charcoal/15 shrink-0">

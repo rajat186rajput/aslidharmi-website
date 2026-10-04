@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { MULTILINGUAL_ENABLED } from "@/lib/multilingual";
 import EventManagementClient from "./EventManagementClient";
 
 // Page-specific SEO metadata (2026-09-02 QA fix). Split into a server-component
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
       "One team for every life moment — start to finish, one point of contact.",
     url: "https://aslidharmi.in/services/event-management",
     siteName: "Asli Dharmi",
-    locale: "hi_IN",
+    locale: MULTILINGUAL_ENABLED ? "hi_IN" : "en_IN",
     type: "website",
   },
 };
