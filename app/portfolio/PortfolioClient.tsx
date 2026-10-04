@@ -18,6 +18,11 @@ const C = {
     hinglish: "Jo kiya hai, uski ek jhalak — events, shoots aur craft, jaise sach mein hue.",
     hi: "जो किया है, उसकी एक झलक — इवेंट, शूट और शिल्प, जैसे सच में हुए।",
   },
+  credit: {
+    en: "Photography: Treewood Films — our photographer partner",
+    hinglish: "Photography: Treewood Films — hamare photographer partner",
+    hi: "फ़ोटोग्राफ़ी: Treewood Films — हमारे फ़ोटोग्राफ़र पार्टनर",
+  },
   scrollHint: { en: "Scroll", hinglish: "Scroll karein", hi: "स्क्रॉल करें" },
   projectsLabel: { en: "Projects", hinglish: "Projects", hi: "प्रोजेक्ट्स" },
   projectsTitle: { en: "Job by Job", hinglish: "Ek-Ek Kaam", hi: "एक-एक काम" },
@@ -57,6 +62,9 @@ export default function PortfolioClient() {
         <motion.p {...fadeUp(0.2)} className="mt-6 max-w-2xl text-lg text-charcoal/70">
           {tx(C.sub, lang)}
         </motion.p>
+        <motion.p {...fadeUp(0.3)} className="mt-4 text-sm text-charcoal/50">
+          {tx(C.credit, lang)}
+        </motion.p>
         <motion.p {...fadeUp(0.35)} className="mt-12 text-xs uppercase tracking-[0.25em] text-charcoal/40">
           {tx(C.scrollHint, lang)} ↓
         </motion.p>
@@ -93,7 +101,7 @@ export default function PortfolioClient() {
               <div className="p-6">
                 <div className="mb-2 flex items-center justify-between text-xs uppercase tracking-wider text-charcoal/50">
                   <span className="text-ochre-deep">{tx(p.category, lang)}</span>
-                  <span>{p.date}</span>
+                  {p.date && <span>{p.date}</span>}
                 </div>
                 <h3 className="font-heading text-xl font-semibold text-charcoal">{tx(p.title, lang)}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-charcoal/70">{tx(p.summary, lang)}</p>
