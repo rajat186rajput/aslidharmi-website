@@ -11,38 +11,43 @@ import { GALLERY, GALLERY_IMAGES, PROJECTS } from "@/lib/portfolio";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 // ─── Page copy (trilingual) — skeleton wording, Rajat to finalise ──────────
+const E = (en: string, hi: string) => ({ en, hinglish: en, hi });
+
+// Formal English (Rajat, 2026-10-04): the hinglish key carries the English text.
 const C = {
-  eyebrow: { en: "Our Work", hinglish: "Hamara Kaam", hi: "हमारा काम" },
-  title: { en: "Work,", hinglish: "Kaam,", hi: "काम," },
-  titleEm: { en: "not words", hinglish: "baatein nahi", hi: "बातें नहीं" },
-  sub: {
-    en: "A look at what we have done — events, shoots and craft, as they actually happened.",
-    hinglish: "Jo kiya hai, uski ek jhalak — events, shoots aur craft, jaise sach mein hue.",
-    hi: "जो किया है, उसकी एक झलक — इवेंट, शूट और शिल्प, जैसे सच में हुए।",
-  },
-  credit: {
-    en: "Photography: Treewood Films — our photographer partner",
-    hinglish: "Photography: Treewood Films — hamare photographer partner",
-    hi: "फ़ोटोग्राफ़ी: Treewood Films — हमारे फ़ोटोग्राफ़र पार्टनर",
-  },
-  close: { en: "Close", hinglish: "Band karein", hi: "बंद करें" },
-  scrollHint: { en: "Scroll", hinglish: "Scroll karein", hi: "स्क्रॉल करें" },
-  projectsLabel: { en: "Projects", hinglish: "Projects", hi: "प्रोजेक्ट्स" },
-  projectsTitle: { en: "Job by Job", hinglish: "Ek-Ek Kaam", hi: "एक-एक काम" },
-  ctaTitle: { en: "Want something like this?", hinglish: "Aisa kuch chahiye?", hi: "ऐसा कुछ चाहिए?" },
-  ctaBtn: { en: "Talk to us", hinglish: "Baat karein", hi: "बात करें" },
+  eyebrow: E("Our Work", "हमारा काम"),
+  title: E("The work,", "काम,"),
+  titleEm: E("as it happened", "जैसा हुआ"),
+  sub: E(
+    "A selection of weddings, engagements and celebrations, documented without staging.",
+    "शादियों, सगाइयों और उत्सवों की एक झलक, बिना किसी बनावट के।"
+  ),
+  credit: E(
+    "Photography by Treewood Films, our photography partner",
+    "फ़ोटोग्राफ़ी: Treewood Films, हमारे फ़ोटोग्राफ़ी पार्टनर"
+  ),
+  close: E("Close", "बंद करें"),
+  scrollHint: E(
+    "Scroll to explore · Select any photograph to view it in full",
+    "स्क्रॉल करें · पूरी तस्वीर देखने के लिए किसी पर भी क्लिक करें"
+  ),
+  projectsLabel: E("Projects", "प्रोजेक्ट्स"),
+  projectsTitle: E("Selected Work", "चुनिंदा काम"),
+  ctaTitle: E("Planning an occasion?", "कोई अवसर आने वाला है?"),
+  ctaBtn: E("Get in touch", "संपर्क करें"),
 };
+
 
 export default function PortfolioClient() {
   const { lang } = useLang();
   const reduce = useReducedMotion();
-  const ctaMsg = "Hi! I saw your work page and would like to talk.";
+  const ctaMsg = "Hello, I saw your portfolio and would like to discuss an upcoming occasion.";
   const ctaHref = whatsappHref(ctaMsg) ?? mailtoFallback("Portfolio enquiry");
   const [viewerAt, setViewerAt] = useState<number | null>(null);
   const slides = useMemo(
     () =>
       GALLERY.map((g) => ({
-        src: g.src,
+        src: g.full,
         title: tx(g.caption.title, lang),
         description: tx(g.caption.description, lang),
       })),
@@ -79,12 +84,12 @@ export default function PortfolioClient() {
           {tx(C.credit, lang)}
         </motion.p>
         <motion.p {...fadeUp(0.35)} className="mt-12 text-xs uppercase tracking-[0.25em] text-charcoal/40">
-          {tx(C.scrollHint, lang)} ↓
+          {tx(C.scrollHint, lang)}
         </motion.p>
       </section>
 
       {/* 2 — 3D parallax gallery */}
-      <ParallaxUnfurlingGallery images={GALLERY_IMAGES} heightVh={400} onSelect={setViewerAt} />
+      <ParallaxUnfurlingGallery images={GALLERY_IMAGES} heightVh={900} onSelect={setViewerAt} />
       {viewerAt !== null && (
         <LuminaViewer
           slides={slides}

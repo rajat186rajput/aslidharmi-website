@@ -54,11 +54,12 @@ export default function ParallaxUnfurlingGallery({ images, heightVh = 400, onSel
   const containerRef = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
 
-  // Split into 4 columns, doubled so each column is long enough to parallax.
+  // Split into 4 columns.
   const cols = useMemo(() => {
     const indexed = images.map((img, idx) => ({ img, idx }));
     const split = [0, 1, 2, 3].map((c) => indexed.filter((_, i) => i % 4 === c));
-    return split.map((col) => [...col, ...col]);
+    // short columns are doubled so they are long enough to parallax
+    return split.map((col) => (col.length < 8 ? [...col, ...col] : col));
   }, [images]);
 
   const { scrollYProgress } = useScroll({
@@ -80,11 +81,18 @@ export default function ParallaxUnfurlingGallery({ images, heightVh = 400, onSel
   const rotateZ = useTransform(smooth, [0.15, 1], [15, 2]);
   const translateZ = useTransform(smooth, [0.15, 1], [-800, 0]);
 
-  // Column parallax (alternate directions)
-  const yCol1 = useTransform(smooth, [0.15, 1], ["0%", "-40%"]);
-  const yCol2 = useTransform(smooth, [0.15, 1], ["-40%", "10%"]);
-  const yCol3 = useTransform(smooth, [0.15, 1], ["0%", "-40%"]);
-  const yCol4 = useTransform(smooth, [0.15, 1], ["-30%", "20%"]);
+  // Column parallax (alternate directions). Short columns use the upstream
+  // ranges; long columns (many photos) sweep their full length past the
+  // viewport so every photo is seen at least once (measured 2026-10-04: with
+  // 101 photos the upstream ranges only ever showed 61).
+  const long = cols[0].length >= 8;
+  const r = long
+    ? { a: ["42%", "-42%"], b: ["-42%", "42%"], c: ["38%", "-46%"], d: ["-46%", "38%"] }
+    : { a: ["0%", "-40%"], b: ["-40%", "10%"], c: ["0%", "-40%"], d: ["-30%", "20%"] };
+  const yCol1 = useTransform(smooth, [0.15, 1], r.a);
+  const yCol2 = useTransform(smooth, [0.15, 1], r.b);
+  const yCol3 = useTransform(smooth, [0.15, 1], r.c);
+  const yCol4 = useTransform(smooth, [0.15, 1], r.d);
   const colY = [yCol1, yCol2, yCol3, yCol4];
 
   if (reduceMotion) {
