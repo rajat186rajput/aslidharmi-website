@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { useLang, tx } from "@/lib/i18n";
-import { whatsappHref, WHATSAPP_MAILTO_FALLBACK } from "@/lib/whatsapp";
+import { whatsappHref, mailtoFallback, WHATSAPP_MAILTO_FALLBACK } from "@/lib/whatsapp";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -328,7 +328,7 @@ export default function ServicesClient() {
         </div>
       </section>
 
-      {/* ── (1) THREE SERVICE BUCKETS ── */}
+      {/* ── (1) FOUR SERVICE BUCKETS ── */}
       <section className="px-6 md:px-16 py-24">
         <div className="max-w-6xl mx-auto">
           <RevealBlock>
@@ -403,13 +403,13 @@ export default function ServicesClient() {
           </RevealBlock>
 
           <div className="space-y-16">
-            {SERVICE_CARDS.groups.map((g, gi) => (
+            {SERVICE_CARDS.groups.map((g) => (
               <div key={g.num} data-service-group={g.num}>
                 <RevealBlock>
                   <div className="flex items-baseline gap-4 mb-6 pb-3 border-b border-charcoal/10">
                     <span className="font-heading text-2xl text-ochre/40 font-bold">{g.num}</span>
                     <h3 className="font-heading text-xl md:text-2xl text-charcoal font-semibold leading-snug">
-                      {tx(C.buckets[gi].title, lang)}
+                      {tx(C.buckets.find((b) => b.num === g.num)!.title, lang)}
                     </h3>
                   </div>
                 </RevealBlock>
@@ -433,10 +433,10 @@ export default function ServicesClient() {
                           <p className="font-sans text-sm text-charcoal/55 leading-relaxed mb-4 flex-1">{tx(card.line, lang)}</p>
                           <p className="font-sans text-xs uppercase tracking-wider text-ochre-deep mb-6">{tx(SERVICE_CARDS.tag, lang)}</p>
                           <a
-                            href={href ?? WHATSAPP_MAILTO_FALLBACK}
+                            href={href ?? mailtoFallback(card.wa)}
                             target={href ? "_blank" : undefined}
                             rel={href ? "noopener noreferrer" : undefined}
-                            aria-label={`${btnLabel} ${name}`}
+                            aria-label={`${btnLabel.replace(/\s*→$/, "")}: ${name}`}
                             className="inline-flex items-center self-start px-6 py-3 bg-ochre text-cream font-sans font-medium text-xs tracking-widest uppercase hover:bg-charcoal transition-colors duration-300 rounded-sm"
                           >
                             {btnLabel}
