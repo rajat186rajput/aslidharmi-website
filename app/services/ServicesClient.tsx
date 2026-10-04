@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { useLang, tx } from "@/lib/i18n";
+import { DynamicFrameLayout, type Frame } from "@/components/ui/dynamic-frame-layout";
 import { whatsappHref, mailtoFallback, WHATSAPP_MAILTO_FALLBACK } from "@/lib/whatsapp";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -27,76 +28,6 @@ const C = {
     hi: "हर सेवा एक टीम संभालती है — चुपचाप, सौ फ़ोन कॉल्स के बिना।",
   },
 
-  bucketsLabel: { en: "What We Do", hinglish: "Hum Kya Karte Hain", hi: "हम क्या करते हैं" },
-  bucketsTitle: { en: "Four Ways We Help", hinglish: "Chaar Tareeke Se Madad", hi: "मदद के चार तरीक़े" },
-
-  buckets: [
-    {
-      num: "01",
-      title: { en: "Event Management", hinglish: "Event Management", hi: "इवेंट मैनेजमेंट" },
-      items: {
-        en: "Shaadi · Birthday · Griha Pravesh · Nayi Gaadi · Antim Vidai",
-        hinglish: "Shaadi · Birthday · Griha Pravesh · Nayi Gaadi · Antim Vidai",
-        hi: "शादी · बर्थडे · गृह प्रवेश · नई गाड़ी · अंतिम विदाई",
-      },
-      desc: {
-        en: "Every life moment, one team, start to finish.",
-        hinglish: "Har zindagi ke pal, ek team, shuru se aakhir tak.",
-        hi: "जीवन का हर पल, एक टीम, शुरू से अंत तक।",
-      },
-      linkable: true,
-      href: "/services/event-management",
-    },
-    {
-      num: "02",
-      title: { en: "Technical Services", hinglish: "Technical Services", hi: "तकनीकी सेवाएँ" },
-      items: {
-        en: "Webpage/Social Media · 3D Design · Product Shoot · Big Asset Recording",
-        hinglish: "Webpage/Social Media · 3D Design · Product Shoot · Big Asset Recording",
-        hi: "वेबपेज/सोशल मीडिया · 3D डिज़ाइन · प्रोडक्ट शूट · बिग एसेट रिकॉर्डिंग",
-      },
-      desc: {
-        en: "The digital work that makes the day easier to plan and easier to remember.",
-        hinglish: "Digital kaam jo din ko plan karna aur yaad rakhna dono aasan banata hai.",
-        hi: "डिजिटल काम जो दिन को योजना बनाना और याद रखना दोनों आसान बनाता है।",
-      },
-      linkable: false,
-    },
-    {
-      num: "03",
-      title: { en: "Arts & Customisation", hinglish: "Arts & Customisation", hi: "कला और अनुकूलन" },
-      items: {
-        en: "Craft & Gifting · Tailoring · Makeover · Mehndi · Digital Cards",
-        hinglish: "Craft & Gifting · Tailoring · Makeover · Mehndi · Digital Cards",
-        hi: "क्राफ़्ट और गिफ़्टिंग · सिलाई · मेकओवर · मेहंदी · डिजिटल कार्ड्स",
-      },
-      desc: {
-        en: "Handmade craft, tailoring, and personal styling — made by skilled hands.",
-        hinglish: "Haath se bana craft, tailoring, aur personal styling — skilled haathon se.",
-        hi: "हस्तनिर्मित शिल्प, सिलाई, और व्यक्तिगत स्टाइलिंग — कुशल हाथों से।",
-      },
-      linkable: false,
-    },
-    // Hospitality (2026-09-02, Rajat's annotation): hill trips/homestay arranged at OTHER
-    // people's properties for now, not Asli Dharmi's own — copy must not imply ownership,
-    // and no place names (landscape words like "pahad"/"hills" are fine, no town/state names).
-    {
-      num: "04",
-      title: { en: "Hospitality", hinglish: "Hospitality", hi: "आतिथ्य" },
-      items: {
-        en: "Hill Trips · Honeymoon · Family Getaway · Stay Arrangements",
-        hinglish: "Pahad ki Trip · Honeymoon · Parivaar ka Getaway · Thehrne ka Intezaam",
-        hi: "पहाड़ की ट्रिप · हनीमून · परिवार का गेटअवे · ठहरने का इंतज़ाम",
-      },
-      desc: {
-        en: "Two nights in the hills after the wedding — rooms, travel, food, all arranged.",
-        hinglish: "Shaadi ke baad do raat pahad mein — kamre, gaadi, khaana, sab intezaam.",
-        hi: "शादी के बाद पहाड़ में दो रातें — कमरे, गाड़ी, खाना, सब इंतज़ाम।",
-      },
-      linkable: false,
-    },
-  ],
-
   seeEventMgmt: { en: "See Event Management →", hinglish: "Event Management Dekho →", hi: "इवेंट मैनेजमेंट देखें →" },
 
   ctaHeading: { en: "Let's Talk", hinglish: "Baat Karein", hi: "बात करें" },
@@ -105,24 +36,25 @@ const C = {
   ctaBtnMail: { en: "Email Us →", hinglish: "Email Karo →", hi: "ईमेल भेजें →" },
 } as const;
 
-// ─── "Har Service Alag Se" — 14 standalone service cards ───────────────────
-// Verbatim from vault spec "Website Service Cards - 2026-10-04" (bd-ad). Hard-coded by
-// design (not DB-wired); re-sync when ad_services.active changes. Bucket order 01-04 and
-// card order follow the spec (Pre-wedding Film sits after Photo + Video + Reels).
-// Makeover is intentionally absent (inactive) but stays in the bucket-03 line above.
-// No prices, founder name, geography or proof. Hindi needs a native read before ship.
+// ─── Service cards — 15 standalone cards, regrouped under 9 categories ──────
+// Cards 1-14 verbatim from vault spec "Website Service Cards - 2026-10-04" (bd-ad); card 15
+// (Decoration) and the 9 categories from "Website Service Categories - 2026-10-04".
+// Hard-coded by design (not DB-wired). English-only site (MULTILINGUAL_ENABLED=false): the
+// hinglish/hi strings on cards 1-14 are retained as-is; NEW strings carry en only and reuse
+// the English text for hinglish/hi because tx() requires all three keys.
+// Makeover is intentionally absent (inactive). No prices, founder name, geography or proof.
+const en3 = (s: string) => ({ en: s, hinglish: s, hi: s }); // English reused for hinglish/hi (site is English-only)
+
 const SERVICE_CARDS = {
-  label: { en: "Each Service", hinglish: "Har Service", hi: "हर सेवा" },
-  title: { en: "Each Service, On Its Own", hinglish: "Har Service Alag Se", hi: "हर सेवा, अलग से" },
+  label: { en: "What we do", hinglish: "What we do", hi: "What we do" }, // en only (English-only site)
+  title: { en: "Everything, Piece by Piece", hinglish: "Everything, Piece by Piece", hi: "Everything, Piece by Piece" },
   sub: {
-    en: "Need just one thing? Ask for just that.",
-    hinglish: "Sirf ek cheez chahiye? Sirf wahi poochho.",
-    hi: "सिर्फ़ एक चीज़ चाहिए? सिर्फ़ वही पूछिए।",
+    en: "Pick what you need. Ask for just that.",
+    hinglish: "Pick what you need. Ask for just that.",
+    hi: "Pick what you need. Ask for just that.",
   },
   tag: { en: "On its own, or inside a bundle", hinglish: "Akele bhi, bundle mein bhi", hi: "अकेले भी, बंडल में भी" },
   btn: { en: "Ask on WhatsApp →", hinglish: "WhatsApp par poochho →", hi: "WhatsApp पर पूछें →" },
-  // groups[i] pairs with C.buckets[i] (same order) for the bucket heading.
-  // Mailto fallback label reuses the page's existing C.ctaBtnMail.
   groups: [
     {
       num: "01",
@@ -287,6 +219,57 @@ const SERVICE_CARDS = {
   ],
 } as const;
 
+type ServiceCard = {
+  id: number;
+  name: { en: string; hinglish: string; hi: string };
+  line: { en: string; hinglish: string; hi: string };
+  wa: string;
+};
+
+// Card 15 - Decoration (new 2026-10-04, readiness to_arrange: "arranged for you", never "our team").
+const DECORATION_CARD: ServiceCard = {
+  id: 15,
+  name: en3("Decoration"),
+  line: en3("Decoration for your event, arranged for you."),
+  wa: "Hi! I'd like to know about Decoration.",
+};
+
+const CARD_BY_ID: Record<number, ServiceCard> = Object.fromEntries(
+  [...SERVICE_CARDS.groups.flatMap((g) => g.cards as readonly ServiceCard[]), DECORATION_CARD].map((c) => [c.id, c]),
+);
+
+// ─── 9 categories (row-major 3x3 order = spec order; same order on mobile) ──
+// Media paths are wired now; the files may not exist yet (the build never reads them).
+const TILE_DIR = "/services/tiles";
+const CATEGORIES = [
+  { slug: "photos-film", title: "Photos & Film", tagline: "Photos, film and reels for every occasion.", intro: "Memories of your event, shot and edited into something you will want to keep.", cards: [1, 14, 8, 7, 6] },
+  { slug: "3d-design", title: "3D Design", tagline: "See it in 3D before it is built.", intro: "Stages, spaces and products shown in 3D first, so you can decide before anything is made.", cards: [5] },
+  { slug: "clothing", title: "Clothing", tagline: "Stitched and fitted for your occasion.", intro: "Stitching and fitting, made by skilled hands.", cards: [10] },
+  { slug: "food", title: "Food", tagline: "Food and snacks, arranged for you.", intro: "Food and snacks for your event, arranged so you do not have to chase it.", cards: [2] },
+  { slug: "gifts", title: "Gifts", tagline: "Handmade keepsakes with your names and dates.", intro: "Handmade paper craft and resin keepsakes, made to be kept.", cards: [9] },
+  { slug: "decoration", title: "Decoration", tagline: "Decoration for your event, arranged for you.", intro: "Stage, mandap, flowers and tent, arranged for your occasion.", cards: [15] },
+  { slug: "beauty-mehndi", title: "Beauty & Mehndi", tagline: "Mehndi for your occasion, arranged for you.", intro: "Mehndi for your occasion, arranged for you.", cards: [11] },
+  { slug: "travel-stay", title: "Travel & Stay", tagline: "Cars, hill trips and stays, arranged for you.", intro: "Cars for your family and guests, and trips to the hills with rooms and food arranged.", cards: [3, 13] },
+  { slug: "digital-online", title: "Digital & Online", tagline: "Webpages, social media and digital invitations.", intro: "A simple online presence and invitation cards you can share on WhatsApp.", cards: [4, 12] },
+] as const;
+
+const FRAMES: Frame[] = CATEGORIES.map((c, i) => ({
+  id: i + 1,
+  slug: c.slug,
+  title: c.title,
+  tagline: c.tagline,
+  poster: `${TILE_DIR}/${c.slug}.jpg`,
+  video: `${TILE_DIR}/${c.slug}.mp4`,
+}));
+
+// Event Management band (spec: below the last category section; small link under the grid scrolls to it).
+const EVENT_BAND = {
+  id: "event-packages",
+  gridLink: "Looking for the whole event? See packages",
+  title: "The whole event, one team",
+  body: "Planning the whole event? Our packages bring it together with one team: Shaadi, Birthday, Griha Pravesh, Nayi Gaadi and Antim Vidai.",
+};
+
 function RevealBlock({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const reduce = useReducedMotion();
   return (
@@ -328,127 +311,111 @@ export default function ServicesClient() {
         </div>
       </section>
 
-      {/* ── (1) FOUR SERVICE BUCKETS ── */}
+      {/* ── (1) CATEGORY GRID — 9 video tiles; tap/click scrolls to that category's cards ── */}
       <section className="px-6 md:px-16 py-24">
-        <div className="max-w-6xl mx-auto">
-          <RevealBlock>
-            <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-deep mb-4">{tx(C.bucketsLabel, lang)}</p>
-            <h2 className="font-heading text-4xl md:text-5xl text-charcoal font-semibold mb-16 leading-tight">
-              {tx(C.bucketsTitle, lang)}
-            </h2>
-          </RevealBlock>
-
-          {/* 2-col grid for 4 buckets (was 3-col for 3) — matches the sitewide 4-card pattern
-              already used for the home "What We Do" initiatives band (app/page.tsx) and the
-              /products teaser categories, rather than leaving an orphan on a 3-col grid. */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {C.buckets.map((b, i) => {
-              const cardBody = (
-                <>
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="font-heading text-3xl text-ochre/20 group-hover:text-ochre/40 font-bold transition-colors">
-                      {b.num}
-                    </span>
-                  </div>
-                  <h3 className="font-heading text-2xl text-charcoal font-semibold mb-3 leading-snug group-hover:text-ochre transition-colors duration-300">
-                    {tx(b.title, lang)}
-                  </h3>
-                  <p className="font-sans text-sm text-ochre/70 leading-relaxed mb-4">{tx(b.items, lang)}</p>
-                  <p className="font-sans text-sm text-charcoal/55 leading-relaxed mb-6 flex-1">{tx(b.desc, lang)}</p>
-                  {b.linkable && (
-                    <span className="font-sans text-xs uppercase tracking-wider text-charcoal/40 group-hover:text-ochre transition-colors">
-                      {tx(C.seeEventMgmt, lang)}
-                    </span>
-                  )}
-                </>
-              );
-              return (
-                <motion.div
-                  key={b.num}
-                  initial={reduce ? false : { opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: i * 0.08, ease: EASE }}
-                  viewport={{ once: true, margin: "-40px" }}
-                >
-                  {b.linkable ? (
-                    <Link
-                      href={b.href!}
-                      className="group flex flex-col h-full p-8 border border-charcoal/10 hover:border-ochre/40 transition-colors duration-300 min-h-[210px]"
-                    >
-                      {cardBody}
-                    </Link>
-                  ) : (
-                    <div className="flex flex-col h-full p-8 border border-charcoal/10 cursor-default min-h-[210px]">
-                      {cardBody}
-                    </div>
-                  )}
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* PHASE 2 — after first events: testimonials / portfolio grid / event count. DO NOT populate with placeholder content. */}
-        </div>
-      </section>
-
-      {/* ── (2) HAR SERVICE ALAG SE — 14 standalone service cards ── */}
-      <section className="px-6 md:px-16 py-24 border-t border-charcoal/10">
         <div className="max-w-6xl mx-auto">
           <RevealBlock>
             <p className="font-sans text-xs uppercase tracking-[0.25em] text-ochre-deep mb-4">{tx(SERVICE_CARDS.label, lang)}</p>
             <h2 className="font-heading text-4xl md:text-5xl text-charcoal font-semibold mb-4 leading-tight">
               {tx(SERVICE_CARDS.title, lang)}
             </h2>
-            <p className="font-sans text-lg text-charcoal/55 max-w-2xl leading-relaxed mb-16">{tx(SERVICE_CARDS.sub, lang)}</p>
+            <p className="font-sans text-lg text-charcoal/55 max-w-2xl leading-relaxed mb-12">{tx(SERVICE_CARDS.sub, lang)}</p>
           </RevealBlock>
 
-          <div className="space-y-16">
-            {SERVICE_CARDS.groups.map((g) => (
-              <div key={g.num} data-service-group={g.num}>
-                <RevealBlock>
-                  <div className="flex items-baseline gap-4 mb-6 pb-3 border-b border-charcoal/10">
-                    <span className="font-heading text-2xl text-ochre/40 font-bold">{g.num}</span>
-                    <h3 className="font-heading text-xl md:text-2xl text-charcoal font-semibold leading-snug">
-                      {tx(C.buckets.find((b) => b.num === g.num)!.title, lang)}
-                    </h3>
-                  </div>
-                </RevealBlock>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {g.cards.map((card, ci) => {
-                    const href = whatsappHref(card.wa);
-                    const name = tx(card.name, lang);
-                    const btnLabel = tx(href ? SERVICE_CARDS.btn : C.ctaBtnMail, lang);
-                    return (
-                      <motion.div
-                        key={card.id}
-                        data-service-card={card.id}
-                        initial={reduce ? false : { opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: ci * 0.08, ease: EASE }}
-                        viewport={{ once: true, margin: "-40px" }}
-                        className="h-full"
-                      >
-                        <div className="flex flex-col h-full p-8 border border-charcoal/10 hover:border-ochre/40 transition-colors duration-300 min-h-[260px]">
-                          <h4 className="font-heading text-2xl text-charcoal font-semibold mb-3 leading-snug">{name}</h4>
-                          <p className="font-sans text-sm text-charcoal/55 leading-relaxed mb-4 flex-1">{tx(card.line, lang)}</p>
-                          <p className="font-sans text-xs uppercase tracking-wider text-ochre-deep mb-6">{tx(SERVICE_CARDS.tag, lang)}</p>
-                          <a
-                            href={href ?? mailtoFallback(card.wa)}
-                            target={href ? "_blank" : undefined}
-                            rel={href ? "noopener noreferrer" : undefined}
-                            aria-label={`${btnLabel.replace(/\s*→$/, "")}: ${name}`}
-                            className="inline-flex items-center self-start px-6 py-3 bg-ochre text-cream font-sans font-medium text-xs tracking-widest uppercase hover:bg-charcoal transition-colors duration-300 rounded-sm"
-                          >
-                            {btnLabel}
-                          </a>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
+          {/* Explicit height at md+: the grid is h-full and relies on its parent. */}
+          <div className="md:h-[clamp(520px,75vh,760px)]">
+            <DynamicFrameLayout frames={FRAMES} />
           </div>
+
+          <p className="mt-6">
+            <a
+              href={`#${EVENT_BAND.id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.getElementById(EVENT_BAND.id);
+                el?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+                if (el) history.replaceState(null, "", `#${EVENT_BAND.id}`);
+              }}
+              className="font-sans text-sm text-ochre-deep underline underline-offset-4 hover:text-charcoal transition-colors"
+            >
+              {EVENT_BAND.gridLink}
+            </a>
+          </p>
+        </div>
+      </section>
+
+      {/* ── (2) NINE CATEGORY SECTIONS — 15 standalone service cards ── */}
+      {CATEGORIES.map((cat, n) => (
+        <section
+          key={cat.slug}
+          id={cat.slug}
+          tabIndex={-1}
+          data-service-group={cat.slug}
+          className="px-6 md:px-16 py-16 md:py-20 border-t border-charcoal/10 scroll-mt-20 outline-none"
+        >
+          <div className="max-w-6xl mx-auto">
+            <RevealBlock>
+              <div className="flex items-baseline gap-4 mb-3">
+                <span className="font-heading text-2xl text-ochre/40 font-bold">{String(n + 1).padStart(2, "0")}</span>
+                <h2 className="font-heading text-3xl md:text-4xl text-charcoal font-semibold leading-snug">{cat.title}</h2>
+              </div>
+              <p className="font-sans text-base text-charcoal/55 max-w-2xl leading-relaxed mb-8">{cat.intro}</p>
+            </RevealBlock>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {cat.cards.map((id, ci) => {
+                const card = CARD_BY_ID[id];
+                const href = whatsappHref(card.wa);
+                const name = tx(card.name, lang);
+                const btnLabel = tx(href ? SERVICE_CARDS.btn : C.ctaBtnMail, lang);
+                return (
+                  <motion.div
+                    key={card.id}
+                    data-service-card={card.id}
+                    initial={reduce ? false : { opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: ci * 0.08, ease: EASE }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    className="h-full"
+                  >
+                    <div className="flex flex-col h-full p-8 border border-charcoal/10 hover:border-ochre/40 transition-colors duration-300 min-h-[260px]">
+                      <h3 className="font-heading text-2xl text-charcoal font-semibold mb-3 leading-snug">{name}</h3>
+                      <p className="font-sans text-sm text-charcoal/55 leading-relaxed mb-4 flex-1">{tx(card.line, lang)}</p>
+                      <p className="font-sans text-xs uppercase tracking-wider text-ochre-deep mb-6">{tx(SERVICE_CARDS.tag, lang)}</p>
+                      <a
+                        href={href ?? mailtoFallback(card.wa)}
+                        target={href ? "_blank" : undefined}
+                        rel={href ? "noopener noreferrer" : undefined}
+                        aria-label={`${btnLabel.replace(/\s*→$/, "")}: ${name}`}
+                        className="inline-flex items-center self-start px-6 py-3 bg-ochre text-cream font-sans font-medium text-xs tracking-widest uppercase hover:bg-charcoal transition-colors duration-300 rounded-sm"
+                      >
+                        {btnLabel}
+                      </a>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      ))}
+
+      {/* ── (2b) EVENT MANAGEMENT BAND — after the last category so it never splits grid from sections ── */}
+      <section
+        id={EVENT_BAND.id}
+        tabIndex={-1}
+        className="px-6 md:px-16 py-16 md:py-20 bg-charcoal text-cream scroll-mt-20 outline-none"
+      >
+        <div className="max-w-6xl mx-auto">
+          <RevealBlock>
+            <h2 className="font-heading text-3xl md:text-4xl font-semibold leading-snug mb-4">{EVENT_BAND.title}</h2>
+            <p className="font-sans text-base text-cream/75 max-w-2xl leading-relaxed mb-8">{EVENT_BAND.body}</p>
+            <Link
+              href="/services/event-management"
+              className="inline-flex items-center px-6 py-3 bg-ochre text-cream font-sans font-medium text-xs tracking-widest uppercase hover:bg-cream hover:text-charcoal transition-colors duration-300 rounded-sm"
+            >
+              {tx(C.seeEventMgmt, lang)}
+            </Link>
+          </RevealBlock>
         </div>
       </section>
 
