@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useLang, t, tx } from "@/lib/i18n";
 import { LangSelector } from "@/components/LangSelector";
+import { MULTILINGUAL_ENABLED } from "@/lib/multilingual";
 
 // Asli Dharmi routes (brand wordmark on the left links to Home, Join pill on the right).
 // IA restructure 2026-06-01: 4 middle links (was 5). "Reels & Essays"/Content removed from nav.
@@ -163,9 +164,11 @@ export function AnimatedNavFramer() {
                 {tx(t.nav.join, lang)}
               </Link>
             </motion.div>
-            <motion.div variants={itemVariants} onClick={(e) => e.stopPropagation()} className="flex-shrink-0">
-              <LangSelector />
-            </motion.div>
+            {MULTILINGUAL_ENABLED && (
+              <motion.div variants={itemVariants} onClick={(e) => e.stopPropagation()} className="flex-shrink-0">
+                <LangSelector />
+              </motion.div>
+            )}
           </motion.div>
 
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -222,9 +225,11 @@ export function AnimatedNavFramer() {
                 >
                   {tx(t.nav.join, lang)}
                 </Link>
-                <div className="mt-4 pb-1">
-                  <LangSelector />
-                </div>
+                {MULTILINGUAL_ENABLED && (
+                  <div className="mt-4 pb-1">
+                    <LangSelector />
+                  </div>
+                )}
               </div>
             </motion.div>
           )}

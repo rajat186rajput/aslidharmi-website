@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import { useLang, t, tx, Lang } from "@/lib/i18n";
 import { LangSelector } from "@/components/LangSelector";
+import { MULTILINGUAL_ENABLED } from "@/lib/multilingual";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -55,14 +56,14 @@ export function HeroPremium() {
           <Link href="/about" className="hover:text-[#2C2A27] transition-colors duration-200 font-sans">{tx(t.nav.about, lang)}</Link>
           <Link href="/philosophy" className="hover:text-[#2C2A27] transition-colors duration-200 font-sans">{tx(t.nav.philosophy, lang)}</Link>
           <Link href="/content" className="hover:text-[#2C2A27] transition-colors duration-200 font-sans">{tx(t.nav.content, lang)}</Link>
-          <LangSelector />
+          {MULTILINGUAL_ENABLED && <LangSelector />}
           <Link href="/join" className="px-5 py-2 bg-[#2C2A27] text-[#F5F0E8] rounded-sm text-sm font-sans font-medium hover:bg-[#C8832A] transition-colors duration-300">
             {tx(t.nav.join, lang)}
           </Link>
         </div>
 
         <div className="flex md:hidden items-center gap-3">
-          <LangSelector />
+          {MULTILINGUAL_ENABLED && <LangSelector />}
           <Link href="/join" className="px-4 py-2 bg-[#2C2A27] text-[#F5F0E8] rounded-sm text-xs font-sans font-medium">
             {tx(t.nav.join, lang)}
           </Link>
