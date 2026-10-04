@@ -1,13 +1,13 @@
 "use client"
 
 // Source: https://21st.dev/@oeneco/components/dynamic-frame-layout (public 21st.dev registry, author: oeneco)
-// Local changes (2026-10-04, /services fullscreen category grid):
-//  - frames are static, non-interactive tiles (no link, no tab stop) with title + tagline over a scrim
-//  - hover-expand only (no keyboard trigger: tiles are not focusable)
-//  - md and up only: expansion + video (plays on hover/focus, one at a time). Never under
-//    prefers-reduced-motion (poster only, no expansion, no transition).
-//  - below md: the same 3x3 grid as a still poster grid (no video, no expansion, title only)
-//  - posters are responsive WebP (-320/-640/-1280) with the JPG as fallback
+// Local changes (2026-10-04, /services black-tile grid):
+//  - tiles are static (no link, no tab stop): black at rest, name on the left, services as a bulleted list on the right
+//  - desktop (min-width 768px AND pointer: fine): 3x3 fullscreen grid, hover expands the tile and its video
+//    fades in over black (one at a time); leaving pauses, resets to 0 and fades back to black
+//  - touch / narrow screens: a plain stack of black tiles (name + bullets), no video, no expansion
+//  - prefers-reduced-motion: no video, no expansion, no transition
+//  - no poster / image anywhere: nothing downloads until a tile is hovered
 //  - decorative frame props (corner/edge*/border*) and showFrames removed (unused)
 
 import { useState, useEffect, useRef, useSyncExternalStore } from "react"
@@ -16,13 +16,10 @@ export interface Frame {
   id: number | string
   slug: string
   title: string
-  tagline: string
-  /** Fallback still (.jpg). Responsive variants are expected beside it: <name>-320|640|1280.webp */
-  poster: string
-  /** Silent loop; the page must not depend on it existing at build time. */
+  /** The services inside this category, shown as a bulleted list to the right of the name. */
+  services: readonly string[]
+  /** Silent loop. Only requested after the tile is first hovered; the page never depends on it existing. */
   video: string
-  /** Above-the-fold tiles get a high fetch priority (never lazy: the whole grid is visible on first paint). */
-  priority?: boolean
 }
 
 function useMedia(query: string) {
@@ -37,79 +34,58 @@ function useMedia(query: string) {
   )
 }
 
-// Stronger bottom scrim + soft text-shadow keep cream text >= 4.5:1 over bright posters.
-const SCRIM = "bg-gradient-to-t from-charcoal/95 via-charcoal/60 via-45% to-transparent"
-const SHADOW = "[text-shadow:0_1px_3px_rgba(0,0,0,0.75)]"
-
-function TileText({ title, tagline }: { title: string; tagline: string }) {
+function TileText({ title, services }: { title: string; services: readonly string[] }) {
   return (
-    <span className="absolute inset-x-0 bottom-0 z-10 block p-1.5 sm:p-3 md:p-5 text-left">
-      <span
-        className={`block font-heading font-semibold leading-tight text-cream text-[13px] sm:text-lg md:text-2xl ${SHADOW}`}
-      >
+    <div className="relative z-10 flex h-full w-full items-center gap-3 p-3 sm:p-4 xl:gap-5 xl:p-6 text-cream">
+      <h2 className="font-heading font-semibold leading-tight text-lg xl:text-2xl 2xl:text-3xl shrink-0 max-w-[46%] break-words">
         {title}
-      </span>
-      <span className={`mt-1 hidden md:block font-sans text-sm leading-snug text-cream ${SHADOW}`}>{tagline}</span>
-    </span>
+      </h2>
+      <ul
+        data-frame-list
+        className="min-w-0 flex-1 list-disc space-y-0.5 pl-4 font-sans text-xs xl:text-sm 2xl:text-base leading-snug marker:text-ochre"
+      >
+        {services.map((s) => (
+          <li key={s} className="break-words">
+            {s}
+          </li>
+        ))}
+      </ul>
+    </div>
   )
 }
 
-function Poster({ src, priority }: { src: string; priority?: boolean }) {
-  const base = src.replace(/\.jpg$/, "")
-  const sizes = "(min-width: 768px) 50vw, 34vw"
-  return (
-    <picture>
-      <source
-        type="image/webp"
-        srcSet={`${base}-320.webp 320w, ${base}-640.webp 640w, ${base}-1280.webp 1280w`}
-        sizes={sizes}
-      />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={src}
-        alt=""
-        decoding="async"
-        fetchPriority={priority ? "high" : "auto"}
-        onError={(e) => {
-          e.currentTarget.style.visibility = "hidden"
-        }}
-        className="absolute inset-0 h-full w-full object-cover"
-      />
-    </picture>
-  )
-}
-
-function TileMedia({ frame, playing, canPlay }: { frame: Frame; playing: boolean; canPlay: boolean }) {
-  const videoRef = useRef<HTMLVideoElement>(null)
+function TileVideo({ src, active }: { src: string; active: boolean }) {
+  const ref = useRef<HTMLVideoElement>(null)
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    const v = videoRef.current
+    const v = ref.current
     if (!v) return
-    if (playing && canPlay) {
-      // play() rejects if the file is missing or autoplay is blocked; the poster just stays.
-      v.play().catch(() => {})
+    if (active) {
+      v.play().catch(() => {}) // rejects if the file is missing; the tile just stays black
     } else {
       v.pause()
+      setReady(false)
+      // reset after the fade-out so the frame does not jump while fading
+      const t = window.setTimeout(() => {
+        if (ref.current) ref.current.currentTime = 0
+      }, 320)
+      return () => window.clearTimeout(t)
     }
-  }, [playing, canPlay])
+  }, [active])
 
   return (
-    <div className="absolute inset-0 overflow-hidden bg-charcoal">
-      <Poster src={frame.poster} priority={frame.priority} />
-      {canPlay && (
-        <video
-          ref={videoRef}
-          className="absolute inset-0 h-full w-full object-cover"
-          src={frame.video}
-          muted
-          playsInline
-          loop
-          preload="none"
-          aria-hidden="true"
-        />
-      )}
-      <span className={`absolute inset-0 ${SCRIM}`} aria-hidden="true" />
-    </div>
+    <video
+      ref={ref}
+      className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${active && ready ? "opacity-100" : "opacity-0"}`}
+      src={src}
+      muted
+      playsInline
+      loop
+      preload="none"
+      aria-hidden="true"
+      onPlaying={() => setReady(true)}
+    />
   )
 }
 
@@ -122,9 +98,10 @@ interface DynamicFrameLayoutProps {
 
 export function DynamicFrameLayout({ frames, className, hoverSize = 6, gapSize = 4 }: DynamicFrameLayoutProps) {
   const reduced = useMedia("(prefers-reduced-motion: reduce)")
-  const wide = useMedia("(min-width: 768px)")
-  const interactive = wide && !reduced // expansion + video only here
+  const fineWide = useMedia("(min-width: 768px) and (pointer: fine)")
+  const interactive = fineWide && !reduced // expansion + video only here
   const [hover, setHover] = useState<{ row: number; col: number } | null>(null)
+  const [armed, setArmed] = useState<Set<number | string>>(new Set()) // tiles whose video may be mounted
   const active = interactive ? hover : null
 
   const sizes = (index: number | undefined) => {
@@ -135,11 +112,11 @@ export function DynamicFrameLayout({ frames, className, hoverSize = 6, gapSize =
 
   return (
     <div
-      className={`grid h-full w-full ${className ?? ""}`}
+      className={`flex flex-col [@media(min-width:768px)_and_(pointer:fine)]:grid [@media(min-width:768px)_and_(pointer:fine)]:h-full w-full bg-cream/20 ${className ?? ""}`}
       style={{
         gridTemplateRows: sizes(active?.row),
         gridTemplateColumns: sizes(active?.col),
-        gap: `${wide ? gapSize : 2}px`,
+        gap: `${gapSize}px`,
         transition: interactive ? "grid-template-rows 0.4s ease, grid-template-columns 0.4s ease" : "none",
       }}
       data-frame-grid
@@ -147,16 +124,23 @@ export function DynamicFrameLayout({ frames, className, hoverSize = 6, gapSize =
       {frames.map((frame, i) => {
         const row = Math.floor(i / 3)
         const col = i % 3
+        const isActive = active?.row === row && active?.col === col
         return (
           <div
             key={frame.id}
             data-frame-tile={frame.slug}
-            className="relative block min-h-0 min-w-0 overflow-hidden"
-            onMouseEnter={() => setHover({ row, col })}
+            className="relative min-h-28 [@media(min-width:768px)_and_(pointer:fine)]:min-h-0 min-w-0 overflow-hidden bg-black"
+            onMouseEnter={() => {
+              if (!interactive) return
+              setHover({ row, col })
+              setArmed((s) => (s.has(frame.id) ? s : new Set(s).add(frame.id)))
+            }}
             onMouseLeave={() => setHover(null)}
           >
-            <TileMedia frame={frame} playing={active?.row === row && active?.col === col} canPlay={interactive} />
-            <TileText title={frame.title} tagline={frame.tagline} />
+            {interactive && armed.has(frame.id) && <TileVideo src={frame.video} active={isActive} />}
+            {/* scrim keeps the text legible over the video; invisible against the black rest state */}
+            <span className="absolute inset-0 bg-black/55" aria-hidden="true" />
+            <TileText title={frame.title} services={frame.services} />
           </div>
         )
       })}
