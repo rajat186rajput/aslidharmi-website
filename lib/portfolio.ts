@@ -7,7 +7,7 @@
 // were supplied, so none are invented.
 // Copy is formal English (Rajat, 2026-10-04): the `hinglish` key carries the
 // same English text so the site's default language shows English on this page.
-// Page stays noindex + off the nav until Rajat signs off.
+// Live on aslidharmi.in/portfolio (nav: "Our Work") from 2026-10-04, on Rajat's go.
 
 import type { GalleryImage } from "@/components/ui/3d-parallax-unfurling-gallery";
 

@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
 import PortfolioClient from "./PortfolioClient";
 
-// SKELETON (2026-10-04): placeholder content — noindex until lib/portfolio.ts
-// carries real work, and the route is deliberately NOT in the nav yet.
+// Photography: Treewood Films (our photography partner), credited on the page.
 export const metadata: Metadata = {
-  title: "Hamara Kaam — Asli Dharmi",
-  description: "A look at the work — events, shoots and craft, as they actually happened.",
-  robots: { index: false, follow: false },
+  title: "Our Work — Asli Dharmi",
+  description:
+    "A selection of weddings, engagements and celebrations, documented without staging. Photography by Treewood Films.",
+  openGraph: {
+    title: "Our Work — Asli Dharmi",
+    description: "Weddings, engagements and celebrations, documented without staging.",
+    url: "https://aslidharmi.in/portfolio",
+    siteName: "Asli Dharmi",
+    type: "website",
+  },
 };
 
 export default function PortfolioPage() {
